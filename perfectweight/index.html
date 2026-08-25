@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PerfectWeight — 體重與身體組成追蹤</title>
 <meta name="description" content="赤腳站上藍牙體重計，體重與九項身體組成指標自動同步。不需要註冊帳號，紀錄存在你自己的手機裡。">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;family=Noto+Serif+TC:wght@600;700&amp;display=swap" rel="stylesheet">
@@ -86,10 +88,13 @@
   <header style="position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: color-mix(in srgb, var(--bg) 88%, transparent); border-bottom: 1px solid var(--outline-var)">
     <div class="pw-wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 68px">
       <div style="display: flex; align-items: center; gap: 10px">
-        <div style="width: 30px; height: 30px; border-radius: 10px; background: var(--pri); display: flex; align-items: center; justify-content: center">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21c4.97 0 9-4.03 9-9 0-6-9-10-9-10S3 6 3 12c0 4.97 4.03 9 9 9Z"></path>
-            <path d="M12 21V9"></path>
+        <div style="width: 30px; height: 30px; border-radius: 10px; overflow: hidden; flex-shrink: 0">
+          <svg width="30" height="30" viewBox="0 0 1024 1024" style="display: block" role="img" aria-label="PerfectWeight">
+            <rect width="1024" height="1024" fill="#00696A"></rect>
+            <rect x="232" y="232" width="560" height="560" rx="224" fill="#FFFFFF"></rect>
+            <rect x="332" y="348" width="360" height="172" rx="86" fill="#9CF1EE"></rect>
+            <path d="M512 386c34 44 52 74 52 100a52 52 0 0 1-104 0c0-26 18-56 52-100z" fill="#E58A75"></path>
+            <path d="M418 616 Q512 712 606 616" fill="none" stroke="#9CF1EE" stroke-width="40" stroke-linecap="round"></path>
           </svg>
         </div>
         <span style="font-size: 17px; font-weight: 700; letter-spacing: -0.2px">PerfectWeight</span>
@@ -463,9 +468,13 @@
   <footer style="border-top: 1px solid var(--outline-var); padding: 34px 0">
     <div class="pw-wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px">
       <div style="display: flex; align-items: center; gap: 9px">
-        <div style="width: 24px; height: 24px; border-radius: 8px; background: var(--pri); display: flex; align-items: center; justify-content: center">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21c4.97 0 9-4.03 9-9 0-6-9-10-9-10S3 6 3 12c0 4.97 4.03 9 9 9Z"></path>
+        <div style="width: 24px; height: 24px; border-radius: 8px; overflow: hidden; flex-shrink: 0">
+          <svg width="24" height="24" viewBox="0 0 1024 1024" style="display: block" role="img" aria-label="PerfectWeight">
+            <rect width="1024" height="1024" fill="#00696A"></rect>
+            <rect x="232" y="232" width="560" height="560" rx="224" fill="#FFFFFF"></rect>
+            <rect x="332" y="348" width="360" height="172" rx="86" fill="#9CF1EE"></rect>
+            <path d="M512 386c34 44 52 74 52 100a52 52 0 0 1-104 0c0-26 18-56 52-100z" fill="#E58A75"></path>
+            <path d="M418 616 Q512 712 606 616" fill="none" stroke="#9CF1EE" stroke-width="40" stroke-linecap="round"></path>
           </svg>
         </div>
         <span style="font-size: 14.5px; font-weight: 500">PerfectWeight</span>
