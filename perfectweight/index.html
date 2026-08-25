@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PerfectWeight — 體重與身體組成追蹤</title>
+<meta name="description" content="赤腳站上藍牙體重計，體重與九項身體組成指標自動同步。不需要註冊帳號，紀錄存在你自己的手機裡。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;family=Noto+Serif+TC:wght@600;700&amp;display=swap" rel="stylesheet">
+<style>
+
+    body { margin: 0; }
+
+    /* PerfectWeight M3 tokens, lifted from ui/theme/Color.kt */
+    :root {
+      --pri: #00696A; --on-pri: #FFFFFF;
+      --pri-con: #9CF1EE; --on-pri-con: #00201F;
+      --pri-con-alt: #DDF2F1; --pri-con-chip: #EAFFFD; --pri-con-track: #CBEFED;
+      --ter: #E58A75; --ter-con: #FFE0D6; --on-ter-con: #5C1900;
+      --bg: #F7FAF9; --surface: #FFFFFF; --surface-var: #EDF3F2;
+      --on-bg: #191C1C; --on-surface-var: #3F4948; --on-subtle: #6C7877;
+      --outline: #BFC9C8; --outline-var: #DDE5E4;
+      --chart-fill: rgba(0, 105, 106, 0.12);
+      --shadow: rgba(0, 80, 79, 0.10);
+      --scrim: rgba(0, 32, 31, 0.06);
+    }
+    
+    .pw-root {
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+      color: var(--on-bg, #191C1C);
+      background: var(--bg, #F7FAF9);
+      -webkit-font-smoothing: antialiased;
+    }
+    .pw-serif {
+      font-family: "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif;
+    }
+    a { color: #00696A; text-decoration: none; }
+    a:hover { color: #004F50; }
+
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+      --pri: #4FDAD7; --on-pri: #003736;
+      --pri-con: #00504F; --on-pri-con: #9CF1EE;
+      --pri-con-alt: #123231; --pri-con-chip: rgba(156, 241, 238, 0.16); --pri-con-track: rgba(156, 241, 238, 0.20);
+      --ter: #FFB4A2; --ter-con: #5C2214; --on-ter-con: #FFDBD1;
+      --bg: #0E1514; --surface: #182120; --surface-var: #1E2827;
+      --on-bg: #E0E3E2; --on-surface-var: #BFC9C8; --on-subtle: #8A9695;
+      --outline: #3D4A49; --outline-var: #2A3433;
+      --chart-fill: rgba(79, 218, 215, 0.14);
+      --shadow: rgba(0, 0, 0, 0.50);
+      --scrim: rgba(156, 241, 238, 0.06);
+      }
+      a { color: #4FDAD7; }
+      a:hover { color: #9CF1EE; }
+    }
+
+    .pw-wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .pw-h1 { font-size: 56px; line-height: 1.14; letter-spacing: -0.5px; }
+    .pw-h2 { font-size: 34px; line-height: 1.3; letter-spacing: -0.2px; }
+    .pw-lead { font-size: 19px; line-height: 1.75; }
+    .pw-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pw-hero-cols { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); }
+    .pw-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    @media (max-width: 900px) {
+      .pw-h1 { font-size: 40px; }
+      .pw-h2 { font-size: 28px; }
+      .pw-lead { font-size: 17px; }
+      .pw-hero-cols { grid-template-columns: minmax(0, 1fr); }
+      .pw-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .pw-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .pw-grid-3, .pw-steps { grid-template-columns: minmax(0, 1fr); }
+      .pw-wrap { padding: 0 20px; }
+    }
+  
+</style>
+</head>
+<body>
+<div class="pw-root">
+
+  <!-- ── header ─────────────────────────────────────────────── -->
+  <header style="position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: color-mix(in srgb, var(--bg) 88%, transparent); border-bottom: 1px solid var(--outline-var)">
+    <div class="pw-wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 68px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="width: 30px; height: 30px; border-radius: 10px; background: var(--pri); display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21c4.97 0 9-4.03 9-9 0-6-9-10-9-10S3 6 3 12c0 4.97 4.03 9 9 9Z"></path>
+            <path d="M12 21V9"></path>
+          </svg>
+        </div>
+        <span style="font-size: 17px; font-weight: 700; letter-spacing: -0.2px">PerfectWeight</span>
+      </div>
+      <nav style="display: flex; align-items: center; gap: 28px; font-size: 15px">
+        <a href="#features">功能</a>
+        <a href="#privacy">資料與隱私</a>
+        <a href="#how">使用方式</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── hero ───────────────────────────────────────────────── -->
+  <section style="padding: 88px 0 72px">
+    <div class="pw-wrap pw-hero-cols" style="display: grid; gap: 56px; align-items: center">
+
+      <div style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 7px 14px 7px 11px; border-radius: 50px; background: var(--pri-con-chip); border: 1px solid var(--outline-var); font-size: 13.5px; font-weight: 500; color: var(--on-surface-var)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 7l10 10-5 5V2l5 5L7 17"></path>
+          </svg>
+          藍牙體重計 · 站上去就好
+        </div>
+
+        <h1 class="pw-h1 pw-serif" style="margin: 0; font-weight: 700">
+          量完就記好，<br>趨勢自己會說話。
+        </h1>
+
+        <p class="pw-lead" style="margin: 0; color: var(--on-surface-var); max-width: 30em; text-wrap: pretty">
+          赤腳站上藍牙體重計，體重與九項身體組成指標自動同步進 App。不需要註冊帳號，紀錄就存在你自己的手機裡。
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+          <a href="[YOUR GOOGLE PLAY URL]" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 26px; border-radius: 50px; background: var(--pri); color: var(--on-pri); font-size: 16px; font-weight: 500; box-shadow: 0 6px 18px var(--shadow)">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v13"></path><path d="m7 12 5 5 5-5"></path><path d="M4 21h16"></path>
+            </svg>
+            在 Google Play 下載
+          </a>
+          <a href="#how" style="display: inline-flex; align-items: center; gap: 8px; padding: 15px 24px; border-radius: 50px; border: 1px solid var(--outline); color: var(--on-surface-var); font-size: 16px; font-weight: 500">
+            看看怎麼用
+          </a>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px">
+          <span style="padding: 7px 13px; border-radius: 50px; background: var(--pri-con-alt); color: var(--on-surface-var); font-size: 13.5px">免註冊</span>
+          <span style="padding: 7px 13px; border-radius: 50px; background: var(--pri-con-alt); color: var(--on-surface-var); font-size: 13.5px">紀錄存在本機</span>
+          <span style="padding: 7px 13px; border-radius: 50px; background: var(--pri-con-alt); color: var(--on-surface-var); font-size: 13.5px">支援手動輸入</span>
+          <span style="padding: 7px 13px; border-radius: 50px; background: var(--pri-con-alt); color: var(--on-surface-var); font-size: 13.5px">繁中 / English</span>
+        </div>
+      </div>
+
+      <!-- phone: the app's own Home screen, rebuilt from ui/screens + ui/components -->
+      <div style="display: flex; justify-content: center">
+        <div style="width: 320px; border-radius: 44px; padding: 10px; background: var(--surface); border: 1px solid var(--outline-var); box-shadow: 0 28px 60px var(--shadow)">
+          <div style="border-radius: 35px; overflow: hidden; background: var(--bg); padding: 18px 16px 16px">
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px">
+              <span style="font-size: 19px; font-weight: 700">PerfectWeight</span>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div style="width: 30px; height: 30px; border-radius: 50px; background: var(--pri-con); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--on-pri-con)">怡</div>
+              </div>
+            </div>
+
+            <!-- HomeSummaryCard: primaryContainer, 28dp radius, 20dp padding, 16dp gaps -->
+            <div style="border-radius: 28px; background: var(--pri-con); color: var(--on-pri-con); padding: 20px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+                <span style="font-size: 12.5px; opacity: 0.75">目前體重 · 08:12</span>
+                <span style="padding: 4px 10px; border-radius: 50px; background: var(--pri-con-chip); font-size: 11.5px; font-weight: 500">連續紀錄 12 天</span>
+              </div>
+              <div style="display: flex; align-items: flex-end; gap: 10px">
+                <span style="font-size: 46px; font-weight: 700; line-height: 1; letter-spacing: -1px">62.4</span>
+                <span style="font-size: 17px; font-weight: 500; padding-bottom: 5px">kg</span>
+                <span style="margin-left: auto; display: inline-flex; align-items: center; gap: 3px; padding-bottom: 7px; font-size: 13.5px; font-weight: 500">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 7 6 6 4-4 8 8"></path><path d="M21 17v-6h-6"></path>
+                  </svg>
+                  0.3
+                </span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 7px">
+                <div style="height: 8px; border-radius: 50px; background: var(--pri-con-track); overflow: hidden">
+                  <div style="width: 68%; height: 100%; border-radius: 50px; background: var(--pri)"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11.5px; opacity: 0.8">
+                  <span>目標 58.0 kg</span>
+                  <span>距離目標還有 4.4 kg</span>
+                </div>
+              </div>
+              <div style="font-size: 12.5px; opacity: 0.8">本週平均下降 0.4 kg，照這個速度約 11 週後達標</div>
+            </div>
+
+            <!-- trend chart card -->
+            <div style="margin-top: 12px; border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 16px; display: flex; flex-direction: column; gap: 12px">
+              <div style="display: flex; align-items: center; justify-content: space-between">
+                <span style="font-size: 13px; font-weight: 500">體重趨勢 · 三個月</span>
+                <span style="font-size: 12px; color: var(--pri)">全部紀錄</span>
+              </div>
+              <svg viewBox="0 0 260 76" style="width: 100%; height: 76px; display: block">
+                <path d="M0 58 L37 50 L74 55 L111 40 L148 44 L185 27 L222 31 L259 16 L259 76 L0 76 Z" fill="var(--chart-fill)"></path>
+                <path d="M0 58 L37 50 L74 55 L111 40 L148 44 L185 27 L222 31 L259 16" fill="none" stroke="var(--pri)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="259" cy="16" r="3.6" fill="var(--pri)"></circle>
+              </svg>
+            </div>
+
+            <!-- quick stats -->
+            <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+              <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 12px 10px; display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 10.5px; color: var(--on-subtle)">體脂率</span>
+                <span style="font-size: 17px; font-weight: 700">24.1<span style="font-size: 11px; font-weight: 400">%</span></span>
+              </div>
+              <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 12px 10px; display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 10.5px; color: var(--on-subtle)">肌肉量</span>
+                <span style="font-size: 17px; font-weight: 700">44.6<span style="font-size: 11px; font-weight: 400">kg</span></span>
+              </div>
+              <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 12px 10px; display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 10.5px; color: var(--on-subtle)">身體年齡</span>
+                <span style="font-size: 17px; font-weight: 700">29<span style="font-size: 11px; font-weight: 400">歲</span></span>
+              </div>
+            </div>
+
+            <!-- FAB -->
+            <div style="display: flex; justify-content: flex-end; padding-top: 14px">
+              <div style="display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 50px; background: var(--pri); color: var(--on-pri); font-size: 14px; font-weight: 500; box-shadow: 0 8px 20px var(--shadow)">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"></path><path d="M5 12h14"></path>
+                </svg>
+                記錄體重
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── features ───────────────────────────────────────────── -->
+  <section id="features" style="padding: 72px 0; background: var(--surface-var)">
+    <div class="pw-wrap" style="display: flex; flex-direction: column; gap: 44px">
+
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 34em">
+        <h2 class="pw-h2 pw-serif" style="margin: 0; font-weight: 700">量測、看懂、然後持續。</h2>
+        <p style="margin: 0; font-size: 17px; line-height: 1.75; color: var(--on-surface-var)">
+          一次量測會留下九項指標。App 把它們整理成趨勢，而不是一堆你看過就忘的數字。
+        </p>
+      </div>
+
+      <div class="pw-grid-3" style="display: grid; gap: 20px">
+
+        <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 26px; display: flex; flex-direction: column; gap: 13px">
+          <div style="width: 42px; height: 42px; border-radius: 14px; background: var(--pri-con-alt); display: flex; align-items: center; justify-content: center; color: var(--pri)">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 7l10 10-5 5V2l5 5L7 17"></path>
+            </svg>
+          </div>
+          <h3 style="margin: 0; font-size: 17.5px; font-weight: 700">藍牙自動同步</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+            開啟藍牙、赤腳站上體重計，量完自動帶進 App，不用自己抄數字。找不到體重計時會清楚告訴你，而不是一直轉圈。
+          </p>
+        </div>
+
+        <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 26px; display: flex; flex-direction: column; gap: 13px">
+          <div style="width: 42px; height: 42px; border-radius: 14px; background: var(--pri-con-alt); display: flex; align-items: center; justify-content: center; color: var(--pri)">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
+            </svg>
+          </div>
+          <h3 style="margin: 0; font-size: 17.5px; font-weight: 700">九項身體組成</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+            體重、BMI、體脂率、水分、肌肉量、骨量、內臟脂肪、基礎代謝率、身體年齡 —— 一次量測全部留下，並附上高／正常／偏低的判讀。
+          </p>
+        </div>
+
+        <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 26px; display: flex; flex-direction: column; gap: 13px">
+          <div style="width: 42px; height: 42px; border-radius: 14px; background: var(--pri-con-alt); display: flex; align-items: center; justify-content: center; color: var(--pri)">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"></path><path d="m7 14 4-4 3 3 5-6"></path>
+            </svg>
+          </div>
+          <h3 style="margin: 0; font-size: 17.5px; font-weight: 700">趨勢圖與指標比較</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+            一週、一個月、三個月或自訂區間的體重曲線；也能挑兩個指標疊在一起看走向，例如體脂率對肌肉量。
+          </p>
+        </div>
+
+        <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 26px; display: flex; flex-direction: column; gap: 13px">
+          <div style="width: 42px; height: 42px; border-radius: 14px; background: var(--ter-con); display: flex; align-items: center; justify-content: center; color: var(--on-ter-con)">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5"></circle>
+            </svg>
+          </div>
+          <h3 style="margin: 0; font-size: 17.5px; font-weight: 700">目標與連續紀錄</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+            設定目標體重後，首頁直接顯示進度、距離目標還差多少，以及照本週平均速度大約幾週後達標。連續紀錄天數幫你維持習慣。
+          </p>
+        </div>
+
+        <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 26px; display: flex; flex-direction: column; gap: 13px">
+          <div style="width: 42px; height: 42px; border-radius: 14px; background: var(--pri-con-alt); display: flex; align-items: center; justify-content: center; color: var(--pri)">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="3.2"></circle><path d="M17 11h5"></path><path d="M19.5 8.5v5"></path>
+            </svg>
+          </div>
+          <h3 style="margin: 0; font-size: 17.5px; font-weight: 700">一台體重計，全家共用</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+            建立多位使用者後，量測時會依體重範圍自動判斷是誰站上去，不必每次先切換。每個人的紀錄各自獨立。
+          </p>
+        </div>
+
+        <div style="border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 26px; display: flex; flex-direction: column; gap: 13px">
+          <div style="width: 42px; height: 42px; border-radius: 14px; background: var(--pri-con-alt); display: flex; align-items: center; justify-content: center; color: var(--pri)">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8a6 6 0 1 0-12 0c0 6-3 7-3 7h18s-3-1-3-7"></path><path d="M10.5 20a2 2 0 0 0 3 0"></path>
+            </svg>
+          </div>
+          <h3 style="margin: 0; font-size: 17.5px; font-weight: 700">提醒與桌面小工具</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+            每天固定時間提醒你站上體重計；主畫面小工具不用開 App 就能看到目前體重與距離目標的差距。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── privacy ────────────────────────────────────────────── -->
+  <section id="privacy" style="padding: 84px 0">
+    <div class="pw-wrap" style="display: grid; gap: 44px">
+
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 34em">
+        <h2 class="pw-h2 pw-serif" style="margin: 0; font-weight: 700">你的資料放在哪裡，說清楚。</h2>
+        <p style="margin: 0; font-size: 17px; line-height: 1.75; color: var(--on-surface-var)">
+          體重是很個人的資料。以下是這個 App 實際的做法 —— 包含會連網的部分。
+        </p>
+      </div>
+
+      <div style="display: grid; gap: 16px">
+
+        <div style="display: flex; gap: 18px; align-items: flex-start; border-radius: 20px; background: var(--pri-con-alt); padding: 24px 26px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700">不需要註冊或登入帳號</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+              裝好打開就能用。建立使用者資料只是為了計算 BMI 與身體組成，那份資料留在手機上，不會送去任何地方。
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 18px; align-items: flex-start; border-radius: 20px; background: var(--pri-con-alt); padding: 24px 26px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700">量測紀錄存在手機本機</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+              所有量測寫進手機裡的本機資料庫。沒有帳號系統，也沒有把你的體重紀錄同步到我們伺服器的機制 —— 因為沒有那樣的伺服器。
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 18px; align-items: flex-start; border-radius: 20px; background: var(--pri-con-alt); padding: 24px 26px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700">要備份，用你自己的檔案</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+              設定裡的「匯出 CSV」會把目前使用者的所有紀錄存成一個檔案，要備份或轉去別的工具都可以。檔案交到你手上，去哪裡由你決定。
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 18px; align-items: flex-start; border-radius: 20px; background: var(--pri-con-alt); padding: 24px 26px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700">沒有惱人的蓋版廣告</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--on-surface-var)">
+              不用為了量一次體重還要被蓋版廣告騷擾，或是跟關閉廣告的叉叉玩捉迷藏，只有不影響功能的小小橫幅。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── how to use ─────────────────────────────────────────── -->
+  <section id="how" style="padding: 78px 0; background: var(--surface-var)">
+    <div class="pw-wrap" style="display: flex; flex-direction: column; gap: 44px">
+
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 34em">
+        <h2 class="pw-h2 pw-serif" style="margin: 0; font-weight: 700">四步就上手。</h2>
+        <p style="margin: 0; font-size: 17px; line-height: 1.75; color: var(--on-surface-var)">
+          第一次打開會有三步導覽帶你走完設定，之後每天就只剩「站上去」這件事。
+        </p>
+      </div>
+
+      <div class="pw-steps" style="display: grid; gap: 20px">
+
+        <div style="display: flex; flex-direction: column; gap: 13px; border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 24px">
+          <div style="width: 34px; height: 34px; border-radius: 50px; background: var(--pri); color: var(--on-pri); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">1</div>
+          <h3 style="margin: 0; font-size: 17px; font-weight: 700">建立你的資料</h3>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.7; color: var(--on-surface-var)">
+            填姓名、性別、生日與身高，用來計算 BMI 與身體組成。目標體重選填，之後在設定裡隨時能改。
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 13px; border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 24px">
+          <div style="width: 34px; height: 34px; border-radius: 50px; background: var(--pri); color: var(--on-pri); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">2</div>
+          <h3 style="margin: 0; font-size: 17px; font-weight: 700">站上體重計</h3>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.7; color: var(--on-surface-var)">
+            開啟手機藍牙、赤腳站上去，App 會自動連線量測。沒有藍牙體重計也沒關係，用「手動輸入」補一筆同樣可以。
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 13px; border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 24px">
+          <div style="width: 34px; height: 34px; border-radius: 50px; background: var(--pri); color: var(--on-pri); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">3</div>
+          <h3 style="margin: 0; font-size: 17px; font-weight: 700">看量測結果報告</h3>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.7; color: var(--on-surface-var)">
+            量完直接進報告頁，九項指標一次看完並附判讀。建議固定在早晨空腹量測，前後才好比較。
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 13px; border-radius: 20px; background: var(--surface); border: 1px solid var(--outline-var); padding: 24px">
+          <div style="width: 34px; height: 34px; border-radius: 50px; background: var(--pri); color: var(--on-pri); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">4</div>
+          <h3 style="margin: 0; font-size: 17px; font-weight: 700">持續追蹤</h3>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.7; color: var(--on-surface-var)">
+            回首頁看趨勢圖與目標進度，開啟每日提醒養成習慣。滑掉記錯的那筆就刪除，按「復原」還能救回來。
+          </p>
+        </div>
+
+      </div>
+
+      <div style="display: flex; gap: 16px; align-items: flex-start; border-radius: 20px; background: var(--pri-con-alt); padding: 22px 24px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px">
+          <circle cx="12" cy="12" r="9"></circle><path d="M12 16v-5"></path><path d="M12 8h.01"></path>
+        </svg>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.7; color: var(--on-surface-var)">
+          身體組成由生物電阻推估，會受飲水、運動與量測時間影響。看趨勢比看單筆數字有意義。
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── closing ────────────────────────────────────────────── -->
+  <section style="padding: 88px 0">
+    <div class="pw-wrap">
+      <div style="border-radius: 28px; background: var(--pri-con); color: var(--on-pri-con); padding: 56px 48px; display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center">
+        <h2 class="pw-h2 pw-serif" style="margin: 0; font-weight: 700; max-width: 16em">今天量一次，三個月後你會看到一條線。</h2>
+        <p style="margin: 0; font-size: 16.5px; line-height: 1.75; max-width: 30em; opacity: 0.85">
+          不用開帳號，不用先想清楚要不要長期使用。裝起來，站上去，剩下的交給趨勢圖。
+        </p>
+        <a href="[YOUR GOOGLE PLAY URL]" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 30px; border-radius: 50px; background: var(--pri); color: var(--on-pri); font-size: 16px; font-weight: 500">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v13"></path><path d="m7 12 5 5 5-5"></path><path d="M4 21h16"></path>
+          </svg>
+          在 Google Play 下載
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── footer ─────────────────────────────────────────────── -->
+  <footer style="border-top: 1px solid var(--outline-var); padding: 34px 0">
+    <div class="pw-wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px">
+      <div style="display: flex; align-items: center; gap: 9px">
+        <div style="width: 24px; height: 24px; border-radius: 8px; background: var(--pri); display: flex; align-items: center; justify-content: center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21c4.97 0 9-4.03 9-9 0-6-9-10-9-10S3 6 3 12c0 4.97 4.03 9 9 9Z"></path>
+          </svg>
+        </div>
+        <span style="font-size: 14.5px; font-weight: 500">PerfectWeight</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; font-size: 14px; color: var(--on-subtle)">
+        <a href="https://terricome.site/perfectweight/privacy">隱私權政策</a>
+        <a href="mailto:ting2discover@gmail.com">聯絡我們</a>
+        <span>© 2026 PerfectWeight</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
