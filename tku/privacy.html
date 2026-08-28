@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頭殼活 隱私權政策</title>
+<meta name="description" content="頭殼活 Thau-Khak-Uah 隱私權政策：沒有帳號系統、沒有雲端資料庫，遊戲資料不經過我們的伺服器。">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap">
+<style>
+:root {
+  --bg: #08080B;
+  --surface: #0E0E13;
+  --gold: #C9A227;
+  --gold-light: #E8D08A;
+  --text: #F2F0EA;
+  --dim: rgba(242, 240, 234, .62);
+  --dimmer: rgba(242, 240, 234, .45);
+  --hair: rgba(242, 240, 234, .1);
+  --hairer: rgba(242, 240, 234, .06);
+  --gold-30: rgba(201, 162, 39, .3);
+  --gold-50: rgba(201, 162, 39, .5);
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-heading: 'Noto Serif TC', 'Songti TC', 'Georgia', serif;
+  --font-body: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'PingFang TC', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--gold-30); }
+a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+h1, h2 { font-family: var(--font-heading); font-weight: 700; margin: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+strong { font-weight: 700; color: var(--text); }
+
+.doc { max-width: 780px; margin: 0 auto; padding: 0 32px; }
+
+/* ---------- header ---------- */
+
+.head {
+  background: radial-gradient(ellipse 130% 82% at 50% 0%, #14121C 0%, #08080B 58%);
+  border-bottom: 1px solid var(--hairer);
+  padding: 72px 0 56px;
+}
+
+.head__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--dimmer);
+  border-bottom: none;
+}
+.head__back:hover { color: var(--gold-light); border-bottom: none; }
+
+.head__mark { display: flex; align-items: center; gap: 12px; margin-top: 30px; }
+.head__mark svg { flex-shrink: 0; }
+.head__name { font-family: var(--font-heading); font-size: 19px; font-weight: 700; letter-spacing: .14em; line-height: 1.25; }
+.head__wordmark { font-family: var(--font-display); font-size: 11px; letter-spacing: .34em; color: var(--gold); line-height: 1; margin-top: 4px; }
+
+.head h1 { font-size: 40px; letter-spacing: .04em; line-height: 1.3; margin: 20px 0 0; text-wrap: pretty; }
+
+.head__meta { font-size: 14px; color: var(--dimmer); margin-top: 12px; letter-spacing: .02em; }
+
+.head__lede { font-size: 17px; color: var(--dim); margin-top: 24px; max-width: 34em; text-wrap: pretty; }
+
+/* ---------- summary callout ---------- */
+
+.summary {
+  background: var(--surface);
+  border: 1px solid var(--gold-30);
+  border-radius: 16px;
+  padding: 24px 26px;
+  margin: 40px 0 0;
+}
+
+.summary__label {
+  font-size: 13px;
+  letter-spacing: .26em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.summary p { font-size: 16px; line-height: 1.85; color: var(--text); text-wrap: pretty; }
+
+/* ---------- clauses ---------- */
+
+.body { padding: 64px 0 0; }
+
+.clause { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 20px; padding: 34px 0; border-top: 1px solid var(--hairer); }
+.clause:first-child { border-top: none; padding-top: 0; }
+
+.clause__ix {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: var(--gold);
+  padding-top: 9px;
+}
+
+.clause h2 { font-size: 22px; letter-spacing: .03em; line-height: 1.5; margin-bottom: 14px; text-wrap: pretty; }
+
+.clause p { color: var(--dim); text-wrap: pretty; }
+.clause p + p { margin-top: 16px; }
+
+.clause ul { margin-top: 4px; }
+.clause li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 12px; padding: 9px 0; color: var(--dim); text-wrap: pretty; }
+.clause li::before { content: ""; width: 5px; height: 5px; border-radius: 999px; background: var(--gold-50); margin-top: 14px; }
+
+/* ---------- contact ---------- */
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-top: 8px;
+}
+.contact span { color: var(--dim); font-size: 16px; }
+.contact a { font-size: 17px; }
+
+/* ---------- footer ---------- */
+
+footer { margin-top: 56px; padding: 32px 0 72px; border-top: 1px solid var(--hairer); }
+.foot { display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; font-size: 14px; color: var(--dimmer); }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 700px) {
+  body { font-size: 16px; }
+  .doc { padding: 0 22px; }
+  .head { padding: 44px 0 40px; }
+  .head h1 { font-size: 30px; }
+  .head__lede { font-size: 16px; }
+  .body { padding: 44px 0 0; }
+  .clause { grid-template-columns: minmax(0, 1fr); padding: 28px 0; gap: 0; }
+  .clause__ix { padding-top: 0; margin-bottom: 8px; }
+  .clause h2 { font-size: 20px; }
+  .summary { padding: 20px; }
+}
+
+</style>
+</head>
+<body>
+<header class="head">
+  <div class="doc">
+    <a class="head__back" href="./">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"></path></svg>
+      回頭殼活介紹
+    </a>
+
+    <div class="head__mark">
+      <svg viewBox="0 0 120 120" width="44" height="44" fill="none" stroke="#C9A227" stroke-opacity=".85" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M22 44C34 24 54 58 68 38C82 18 94 26 104 46"></path>
+        <path d="M18 60C32 40 52 74 66 54C80 34 96 42 106 62"></path>
+        <path d="M22 76C34 56 54 90 68 70C82 50 94 58 104 78"></path>
+      </svg>
+      <div>
+        <div class="head__name">頭殼活</div>
+        <div class="head__wordmark">THAU-KHAK-UAH</div>
+      </div>
+    </div>
+
+    <h1>隱私權政策</h1>
+    <p class="head__meta">最後更新日期：2026 年 8 月 20 日</p>
+    <p class="head__lede">本政策說明「頭殼活 Thau-Khak-Uah」（以下稱「本 App」）如何處理你的資訊。本 App 由 TerriDev 開發及維運（以下稱「我們」）。</p>
+
+    <div class="summary">
+      <div class="summary__label">重 點 摘 要</div>
+      <p>本 App 沒有帳號系統、沒有雲端資料庫，遊戲全程在同一區域網路的裝置之間直接連線，資料不會經過我們的伺服器。我們唯一使用的第三方服務是 Google AdMob 的獎勵廣告。</p>
+    </div>
+  </div>
+</header>
+
+<main class="body">
+  <div class="doc">
+    <section class="clause">
+      <div class="clause__ix">I</div>
+      <div>
+        <h2>我們如何運作：沒有雲端伺服器</h2>
+        <p>本 App 採用「房主裝置本機伺服器」架構：開房的玩家（房主）手機會在本機啟動一個區域網路伺服器，其他玩家的裝置透過同一 Wi-Fi 網路直接連線加入。房間內的所有狀態（玩家列表、數字牌、翻牌結果、名次等）都只存在於房主裝置的記憶體中，房主離線或結束 App 時，房間即隨之消失。這些資料不會被送到我們或任何第三方營運的伺服器或資料庫。</p>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">II</div>
+      <div>
+        <h2>我們收集的資訊</h2>
+        <ul>
+          <li><span><strong>帳號與個人身分資訊：</strong>本 App 不需要註冊帳號，也不會收集姓名、電話號碼、電子郵件地址等個人身分資訊。</span></li>
+          <li><span><strong>相機權限：</strong>僅用於掃描 QR Code 以加入房間。掃描過程即時處理，不會儲存或傳送畫面或影像。</span></li>
+          <li><span><strong>裝置本機儲存：</strong>本 App 會在你的裝置上本機記錄「每日免費輪次」的使用狀態（用於判斷 24 小時內是否已使用過免費輪），此資料僅存於你的裝置，不會同步到雲端或傳送給我們。</span></li>
+          <li><span><strong>區域網路遊戲資料：</strong>遊戲進行中，暱稱、作答內容、翻牌與名次等資訊僅在同一區域網路的裝置之間傳輸，用於維持遊戲進行，我們無法讀取或保存這些資料。</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">III</div>
+      <div>
+        <h2>廣告與第三方服務（Google AdMob）</h2>
+        <p>本 App 提供「廣告續玩」機制：每日免費輪次用完後，房主可選擇觀看一支 Google AdMob 提供的獎勵廣告，以解鎖下一輪遊戲。AdMob 在放送廣告時，可能會收集裝置廣告識別碼（如 Android 廣告 ID）、概略位置、裝置資訊等，用於廣告放送、個人化與成效衡量，此部分資料的處理受 Google 隱私權政策規範，詳見：<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a>。</p>
+        <p>本 App 也使用 Google 使用者訊息平台（User Messaging Platform, UMP），在必要時（例如你位於歐盟、英國等受規範地區）顯示同意管理表單，讓你選擇是否同意個人化廣告；你可以隨時透過該表單調整你的同意設定。</p>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">IV</div>
+      <div>
+        <h2>資料保存</h2>
+        <p>遊戲資料僅存在於房主裝置的記憶體中，房間關閉或 App 結束後即自動刪除，我們不會另外備份或保留任何遊戲內容。</p>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">V</div>
+      <div>
+        <h2>兒童隱私</h2>
+        <p>本 App 並非特別鎖定 13 歲以下兒童為對象，也不會主動收集任何使用者的個人身分資訊。若你認為有兒童在未經家長或監護人同意下透過本 App 提供了個人資料，請透過下方信箱與我們聯絡，我們會盡快處理。</p>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">VI</div>
+      <div>
+        <h2>你的選擇</h2>
+        <ul>
+          <li><span>你可以隨時透過裝置系統設定關閉相機權限；關閉後將無法使用掃描 QR Code 加入房間的功能，但仍可用房號手動加入。</span></li>
+          <li><span>關於廣告個人化，你可以透過裝置系統的廣告設定（如「限制廣告追蹤」）或前述 Google 同意管理表單進行調整。</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">VII</div>
+      <div>
+        <h2>政策異動</h2>
+        <p>我們可能會不定期更新本政策，更新後會修改本頁上方的「最後更新日期」。建議你不定期回來查看最新版本。</p>
+      </div>
+    </section>
+
+    <section class="clause">
+      <div class="clause__ix">VIII</div>
+      <div>
+        <h2>聯絡我們</h2>
+        <p>若你對本政策有任何問題或疑慮，歡迎透過以下信箱與我們聯絡：</p>
+        <div class="contact">
+          <span>電子郵件</span>
+          <a href="mailto:ting2discover@gmail.com">ting2discover@gmail.com</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="doc">
+    <div class="foot">
+      <span>頭殼活（Thau-Khak-Uah） · TerriDev</span>
+      <span>最後更新：2026 年 8 月 20 日</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

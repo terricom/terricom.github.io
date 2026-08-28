@@ -4,141 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>頭殼活 隱私權政策</title>
+<link rel="canonical" href="https://terricome.site/tku/privacy.html">
+<meta http-equiv="refresh" content="0; url=/tku/privacy.html">
+<meta name="robots" content="noindex">
 <style>
-  :root {
-    --bg: #ffffff;
-    --fg: #1c1c1e;
-    --muted: #6b6b70;
-    --accent: #e85d3f;
-    --border: #e7e5e2;
-    --card-bg: #f7f5f2;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #17171a;
-      --fg: #ecebe8;
-      --muted: #a2a0a0;
-      --accent: #ff8266;
-      --border: #2c2c30;
-      --card-bg: #212124;
-    }
-  }
-  * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-    line-height: 1.75;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 32px;
+    background: #08080B;
+    color: rgba(242, 240, 234, .62);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    text-align: center;
   }
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 48px 24px 96px;
-  }
-  header {
-    margin-bottom: 40px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 24px;
-  }
-  h1 {
-    font-size: 1.75rem;
-    margin: 0 0 8px;
-  }
-  .meta {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin: 0 0 16px;
-  }
-  .lang-switch a {
-    color: var(--accent);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-  .lang-switch a:hover { text-decoration: underline; }
-  h2 {
-    font-size: 1.15rem;
-    margin: 40px 0 12px;
-    color: var(--fg);
-  }
-  p, li { color: var(--fg); }
-  ul { padding-left: 1.2em; margin: 12px 0; }
-  li { margin-bottom: 8px; }
-  .callout {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin: 20px 0;
-    font-size: 0.95rem;
-    color: var(--muted);
-  }
-  a { color: var(--accent); }
-  footer {
-    margin-top: 56px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-  code {
-    background: var(--card-bg);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
+  a { color: #E8D08A; }
+  a:hover { color: #C9A227; }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="lang-switch"><a href="tku-privacy-policy-en.html">English version →</a></div>
-      <h1>頭殼活（Thau-Khak-Uah）隱私權政策</h1>
-      <p class="meta">最後更新日期：2026 年 8 月 20 日</p>
-      <p>本政策說明「頭殼活 Thau-Khak-Uah」（以下稱「本 App」）如何處理你的資訊。本 App 由 TerriDev 開發及維運（以下稱「我們」）。</p>
-    </header>
-
-    <div class="callout">
-      重點摘要：本 App 沒有帳號系統、沒有雲端資料庫，遊戲全程在同一區域網路的裝置之間直接連線，資料不會經過我們的伺服器。我們唯一使用的第三方服務是 Google AdMob 的獎勵廣告。
-    </div>
-
-    <h2>1. 我們如何運作：沒有雲端伺服器</h2>
-    <p>本 App 採用「房主裝置本機伺服器」架構：開房的玩家（房主）手機會在本機啟動一個區域網路伺服器，其他玩家的裝置透過同一 Wi-Fi 網路直接連線加入。房間內的所有狀態（玩家列表、數字牌、翻牌結果、名次等）都只存在於房主裝置的記憶體中，房主離線或結束 App 時，房間即隨之消失。這些資料不會被送到我們或任何第三方營運的伺服器或資料庫。</p>
-
-    <h2>2. 我們收集的資訊</h2>
-    <ul>
-      <li><strong>帳號與個人身分資訊：</strong>本 App 不需要註冊帳號，也不會收集姓名、電話號碼、電子郵件地址等個人身分資訊。</li>
-      <li><strong>相機權限：</strong>僅用於掃描 QR Code 以加入房間。掃描過程即時處理，不會儲存或傳送畫面或影像。</li>
-      <li><strong>裝置本機儲存：</strong>本 App 會在你的裝置上本機記錄「每日免費輪次」的使用狀態（用於判斷 24 小時內是否已使用過免費輪），此資料僅存於你的裝置，不會同步到雲端或傳送給我們。</li>
-      <li><strong>區域網路遊戲資料：</strong>遊戲進行中，暱稱、作答內容、翻牌與名次等資訊僅在同一區域網路的裝置之間傳輸，用於維持遊戲進行，我們無法讀取或保存這些資料。</li>
-    </ul>
-
-    <h2>3. 廣告與第三方服務（Google AdMob）</h2>
-    <p>本 App 提供「廣告續玩」機制：每日免費輪次用完後，房主可選擇觀看一支 Google AdMob 提供的獎勵廣告，以解鎖下一輪遊戲。AdMob 在放送廣告時，可能會收集裝置廣告識別碼（如 Android 廣告 ID）、概略位置、裝置資訊等，用於廣告放送、個人化與成效衡量，此部分資料的處理受 Google 隱私權政策規範，詳見：<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a>。</p>
-    <p>本 App 也使用 Google 使用者訊息平台（User Messaging Platform, UMP），在必要時（例如你位於歐盟、英國等受規範地區）顯示同意管理表單，讓你選擇是否同意個人化廣告；你可以隨時透過該表單調整你的同意設定。</p>
-
-    <h2>4. 資料保存</h2>
-    <p>遊戲資料僅存在於房主裝置的記憶體中，房間關閉或 App 結束後即自動刪除，我們不會另外備份或保留任何遊戲內容。</p>
-
-    <h2>5. 兒童隱私</h2>
-    <p>本 App 並非特別鎖定 13 歲以下兒童為對象，也不會主動收集任何使用者的個人身分資訊。若你認為有兒童在未經家長或監護人同意下透過本 App 提供了個人資料，請透過下方信箱與我們聯絡，我們會盡快處理。</p>
-
-    <h2>6. 你的選擇</h2>
-    <ul>
-      <li>你可以隨時透過裝置系統設定關閉相機權限；關閉後將無法使用掃描 QR Code 加入房間的功能，但仍可用房號手動加入。</li>
-      <li>關於廣告個人化，你可以透過裝置系統的廣告設定（如「限制廣告追蹤」）或前述 Google 同意管理表單進行調整。</li>
-    </ul>
-
-    <h2>7. 政策異動</h2>
-    <p>我們可能會不定期更新本政策，更新後會修改本頁上方的「最後更新日期」。建議你不定期回來查看最新版本。</p>
-
-    <h2>8. 聯絡我們</h2>
-    <p>若你對本政策有任何問題或疑慮，歡迎透過以下信箱與我們聯絡：<a href="mailto:ting2discover@gmail.com">ting2discover@gmail.com</a></p>
-
-    <footer>
-      頭殼活（Thau-Khak-Uah） · TerriDev
-    </footer>
-  </div>
+  <p>頭殼活隱私權政策已移至新網址，正在為你轉向。</p>
+  <p><a href="/tku/privacy.html">https://terricome.site/tku/privacy.html</a></p>
 </body>
 </html>

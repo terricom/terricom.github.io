@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頭殼活 Thau-Khak-Uah</title>
+<meta name="description" content="3～8 人、同一個 Wi-Fi 就能開局的手機派對遊戲。每個人手上一個秘密數字 1～10，用回答把它演出來，再由評量員一支一支翻開你們的手機。">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap">
+<style>
+:root {
+  --bg: #08080B;
+  --surface: #0E0E13;
+  --gold: #C9A227;
+  --gold-light: #E8D08A;
+  --error: #E26A58;
+  --text: #F2F0EA;
+  --dim: rgba(242, 240, 234, .52);
+  --dimmer: rgba(242, 240, 234, .45);
+  --faint: rgba(242, 240, 234, .3);
+  --hair: rgba(242, 240, 234, .1);
+  --hairer: rgba(242, 240, 234, .06);
+  --gold-30: rgba(201, 162, 39, .3);
+  --gold-50: rgba(201, 162, 39, .5);
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-heading: 'Noto Serif TC', 'Songti TC', 'Georgia', serif;
+  --font-body: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'PingFang TC', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--gold-30); }
+a.store-badge { border-bottom-color: #A6A6A6; }
+a.store-badge:hover { border-bottom-color: #FFFFFF; }
+a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; margin: 0; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: .34em;
+  color: var(--gold);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.label {
+  font-size: 14px;
+  letter-spacing: .26em;
+  color: var(--dimmer);
+  line-height: 1;
+}
+
+.numeral { font-family: var(--font-display); color: var(--gold-light); font-weight: 400; }
+
+/* ---------- hero ---------- */
+
+.hero {
+  background: radial-gradient(ellipse 120% 78% at 50% 0%, #14121C 0%, #08080B 55%);
+  border-bottom: 1px solid var(--hairer);
+  padding: 88px 0 96px;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 72px;
+  align-items: center;
+}
+
+.hero__title {
+  font-size: 68px;
+  letter-spacing: .1em;
+  line-height: 1.1;
+  margin: 22px 0 12px;
+}
+
+.hero__romaji {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: .42em;
+  color: var(--gold);
+}
+
+.hero__lead {
+  font-size: 21px;
+  line-height: 1.8;
+  color: rgba(242, 240, 234, .82);
+  margin-top: 28px;
+  max-width: 30em;
+  text-wrap: pretty;
+}
+
+.hero__lead em { color: var(--gold-light); font-style: normal; }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+
+.store-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  height: 54px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: #000000;
+  border: 1px solid #A6A6A6;
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.store-badge:hover { border-color: #FFFFFF; color: #FFFFFF; }
+
+.store-badge svg { flex-shrink: 0; }
+
+.store-badge__txt { display: flex; flex-direction: column; justify-content: center; line-height: 1.12; text-align: left; }
+.store-badge__txt small { font-size: 11px; font-weight: 400; letter-spacing: .01em; }
+.store-badge__txt b { font-size: 21px; font-weight: 500; letter-spacing: -.01em; }
+.store-badge--play .store-badge__txt small { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; }
+
+.facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+
+.chip {
+  font-size: 14px;
+  letter-spacing: .04em;
+  color: var(--dim);
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  padding: 7px 16px;
+  line-height: 1.4;
+}
+
+.chip b { color: var(--gold-light); font-family: var(--font-display); font-weight: 400; }
+
+/* ---------- section shell ---------- */
+
+.section { padding: 96px 0; border-bottom: 1px solid var(--hairer); }
+
+.section__head { max-width: 34em; margin-bottom: 44px; }
+
+.section__title { font-size: 34px; letter-spacing: .04em; margin: 14px 0 0; }
+
+.section__note { color: var(--dim); margin-top: 16px; font-size: 17px; text-wrap: pretty; }
+
+/* ---------- scale card ---------- */
+
+.scale-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--gold-30);
+  border-radius: 16px;
+  padding: 26px;
+}
+
+.card__body { font-size: 17px; line-height: 1.7; margin-top: 14px; }
+.card__body b { color: var(--gold-light); font-weight: 400; }
+
+.scale { margin-top: 22px; }
+.scale__row { display: flex; align-items: center; gap: 10px; }
+.scale__bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(201, 162, 39, .2), rgba(232, 208, 138, .9));
+}
+.scale__cap { display: flex; justify-content: space-between; font-size: 14px; color: var(--dimmer); margin-top: 8px; }
+
+.scale-aside li {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--hairer);
+  align-items: baseline;
+}
+.scale-aside li:last-child { border-bottom: 1px solid var(--hairer); }
+.scale-aside .numeral { font-size: 22px; min-width: 2.2em; }
+.scale-aside span { color: var(--dim); font-size: 16px; line-height: 1.65; }
+.scale-aside span b { color: var(--text); font-weight: 400; }
+
+/* ---------- steps ---------- */
+
+.steps input { position: absolute; opacity: 0; pointer-events: none; }
+
+.steps__grid {
+  display: grid;
+  grid-template-columns: 218px 300px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.steps__nav { display: flex; flex-direction: column; gap: 2px; }
+
+.steps__nav label {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--dim);
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.steps__nav label:hover { color: var(--text); background: rgba(242, 240, 234, .03); }
+.steps__nav .rn { font-family: var(--font-display); font-size: 14px; letter-spacing: .1em; min-width: 2.4em; color: var(--faint); }
+
+.steps__stage { height: 620px; position: relative; }
+.steps__copy { align-self: center; }
+
+.panel { display: none; }
+.panel--copy .rn { font-family: var(--font-display); font-size: 15px; letter-spacing: .18em; color: var(--gold); }
+.panel--copy h3 { font-size: 26px; letter-spacing: .04em; margin: 10px 0 16px; }
+.panel--copy p { color: rgba(242, 240, 234, .78); line-height: 1.85; text-wrap: pretty; }
+.panel--copy .aside { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hairer); color: var(--dimmer); font-size: 15px; line-height: 1.7; }
+
+.steps input:nth-of-type(1):checked ~ .steps__grid .panel[data-step="1"],
+.steps input:nth-of-type(2):checked ~ .steps__grid .panel[data-step="2"],
+.steps input:nth-of-type(3):checked ~ .steps__grid .panel[data-step="3"],
+.steps input:nth-of-type(4):checked ~ .steps__grid .panel[data-step="4"],
+.steps input:nth-of-type(5):checked ~ .steps__grid .panel[data-step="5"],
+.steps input:nth-of-type(6):checked ~ .steps__grid .panel[data-step="6"],
+.steps input:nth-of-type(7):checked ~ .steps__grid .panel[data-step="7"] { display: block; }
+
+.steps input:nth-of-type(1):checked ~ .steps__grid label[for="st1"],
+.steps input:nth-of-type(2):checked ~ .steps__grid label[for="st2"],
+.steps input:nth-of-type(3):checked ~ .steps__grid label[for="st3"],
+.steps input:nth-of-type(4):checked ~ .steps__grid label[for="st4"],
+.steps input:nth-of-type(5):checked ~ .steps__grid label[for="st5"],
+.steps input:nth-of-type(6):checked ~ .steps__grid label[for="st6"],
+.steps input:nth-of-type(7):checked ~ .steps__grid label[for="st7"] {
+  color: var(--text);
+  background: rgba(201, 162, 39, .08);
+  border-color: var(--gold-30);
+}
+
+.steps input:nth-of-type(1):checked ~ .steps__grid label[for="st1"] .rn,
+.steps input:nth-of-type(2):checked ~ .steps__grid label[for="st2"] .rn,
+.steps input:nth-of-type(3):checked ~ .steps__grid label[for="st3"] .rn,
+.steps input:nth-of-type(4):checked ~ .steps__grid label[for="st4"] .rn,
+.steps input:nth-of-type(5):checked ~ .steps__grid label[for="st5"] .rn,
+.steps input:nth-of-type(6):checked ~ .steps__grid label[for="st6"] .rn,
+.steps input:nth-of-type(7):checked ~ .steps__grid label[for="st7"] .rn { color: var(--gold); }
+
+/* Step I is the default. Renderers that drop the `checked` attribute would
+   otherwise leave it the one step with no screen showing, so don't let its
+   visibility depend on that attribute surviving. */
+.steps:not(:has(input:checked)) .panel[data-step="1"] { display: block; }
+
+.steps:not(:has(input:checked)) label[for="st1"] {
+  color: var(--text);
+  background: rgba(201, 162, 39, .08);
+  border-color: var(--gold-30);
+}
+
+.steps:not(:has(input:checked)) label[for="st1"] .rn { color: var(--gold); }
+
+.steps input:nth-of-type(1):focus-visible ~ .steps__grid label[for="st1"],
+.steps input:nth-of-type(2):focus-visible ~ .steps__grid label[for="st2"],
+.steps input:nth-of-type(3):focus-visible ~ .steps__grid label[for="st3"],
+.steps input:nth-of-type(4):focus-visible ~ .steps__grid label[for="st4"],
+.steps input:nth-of-type(5):focus-visible ~ .steps__grid label[for="st5"],
+.steps input:nth-of-type(6):focus-visible ~ .steps__grid label[for="st6"],
+.steps input:nth-of-type(7):focus-visible ~ .steps__grid label[for="st7"] {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- phone ---------- */
+
+.phone {
+  width: 300px;
+  height: 620px;
+  border-radius: 40px;
+  padding: 9px;
+  background: #0B0B10;
+  border: 1px solid rgba(201, 162, 39, .28);
+  box-shadow: 0 0 0 5px #0A0A0F, 0 34px 90px rgba(0, 0, 0, .65), 0 0 70px rgba(201, 162, 39, .09);
+}
+
+.phone__screen {
+  height: 100%;
+  border-radius: 32px;
+  overflow: hidden;
+  background: radial-gradient(ellipse 130% 62% at 50% 0%, #14121C 0%, #08080B 55%);
+  padding: 26px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.scr-center { justify-content: center; align-items: center; text-align: center; }
+.scr-title { font-family: var(--font-heading); font-size: 22px; font-weight: 700; }
+.scr-dim { font-size: 15px; color: rgba(242, 240, 234, .5); line-height: 1.6; }
+.scr-label { font-size: 13px; letter-spacing: .26em; color: var(--dimmer); }
+
+.cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+.cat-cell {
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--hairer);
+  border-radius: 14px;
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-indent: .26em;
+}
+.cat-cell--random { border-color: var(--gold-50); background: #14120E; }
+
+.num-card {
+  width: 100px;
+  height: 138px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid rgba(201, 162, 39, .45);
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: 52px;
+  color: var(--gold-light);
+}
+
+.answer-box {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: #0D0D12;
+  border: 1px solid rgba(201, 162, 39, .55);
+  border-radius: 12px;
+  color: rgba(242, 240, 234, .3);
+  font-size: 16px;
+}
+
+.card-back {
+  width: 146px;
+  height: 206px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid rgba(201, 162, 39, .45);
+  border-radius: 14px;
+  margin: 0 auto;
+  box-shadow: 0 0 44px rgba(201, 162, 39, .16);
+}
+
+.mini-card {
+  background: var(--surface);
+  border: 1px solid var(--gold-30);
+  border-radius: 12px;
+  padding: 13px;
+}
+
+.reveal-num {
+  font-family: var(--font-display);
+  font-size: 92px;
+  line-height: 1;
+  color: var(--gold-light);
+  text-shadow: 0 0 34px rgba(201, 162, 39, .5);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(201, 162, 39, .1);
+  border: 1px solid var(--gold-50);
+  font-size: 15px;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid rgba(242, 240, 234, .08);
+  border-radius: 10px;
+  font-size: 14px;
+}
+.rank-row .nm { flex: 1; }
+.rank-row .dt { font-size: 12px; color: var(--dimmer); }
+.ok { color: var(--gold); }
+.no { color: var(--error); }
+
+.home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.home-btn--gold { background: var(--gold); color: var(--bg); }
+.home-btn--ghost { border: 1px solid var(--gold-50); color: var(--gold-light); }
+
+.nick-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  padding: 11px;
+  font-size: 15px;
+}
+.nick-chip .av {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #1A1710;
+  color: #7BC0A8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+/* ---------- feature grid ---------- */
+
+.feat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+
+.feat {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 16px;
+  padding: 26px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feat h3 { font-size: 20px; letter-spacing: .04em; }
+.feat p { color: var(--dim); font-size: 16px; line-height: 1.75; text-wrap: pretty; }
+.feat svg { color: var(--gold); }
+
+/* ---------- limits ---------- */
+
+.limits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 44px; }
+
+.limits li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 16px; padding: 22px 0; border-top: 1px solid var(--hairer); }
+.limits h3 { font-size: 18px; letter-spacing: .03em; margin-bottom: 6px; }
+.limits p { color: var(--dim); font-size: 16px; line-height: 1.75; text-wrap: pretty; }
+.limits .ix { font-family: var(--font-display); font-size: 13px; color: var(--gold); letter-spacing: .06em; padding-top: 5px; }
+
+/* ---------- privacy + footer ---------- */
+
+.privacy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 44px; align-items: start; }
+.privacy ul li { display: flex; gap: 12px; color: var(--dim); font-size: 16px; line-height: 1.7; padding: 7px 0; }
+.privacy ul .tick { color: var(--gold); }
+
+footer { padding: 44px 0 64px; color: var(--dimmer); font-size: 14px; }
+.foot-row { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: baseline; justify-content: space-between; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 18px; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 980px) {
+  .wrap { padding: 0 22px; }
+  .hero { padding: 60px 0 64px; }
+  .hero__grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  .hero__title { font-size: 46px; }
+  .hero__lead { font-size: 18px; margin-top: 22px; }
+  .section { padding: 64px 0; }
+  .section__title { font-size: 28px; }
+  .scale-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .steps__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .steps__nav { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .steps__nav label { padding: 9px 14px; font-size: 15px; gap: 9px; border-color: var(--hairer); }
+  .steps__nav .rn { min-width: 0; }
+  .steps__stage { height: auto; }
+  .phone { margin: 0 auto; }
+  .feat-grid { grid-template-columns: minmax(0, 1fr); }
+  .limits { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .privacy { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+
+@media (max-width: 430px) {
+  body { font-size: 16px; }
+  .hero__title { font-size: 40px; }
+  /* the pair overshoots a 390px screen by ~6px at full padding */
+  .cta-row { gap: 10px; }
+  .store-badge { padding: 0 12px; gap: 9px; }
+  .phone { transform: scale(.92); transform-origin: top center; margin-bottom: -50px; }
+}
+
+/* ---------- logo ---------- */
+
+.logo { width: 172px; height: 172px; position: relative; }
+.logo__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 39, .4);
+  animation: halo 3.2s ease-in-out infinite;
+}
+.logo svg { position: absolute; inset: 0; margin: auto; width: 158px; height: 158px; }
+.logo .w1 { animation: breathe 3.2s ease-in-out infinite; }
+.logo .w2 { animation: breathe 3.2s ease-in-out infinite -1.067s; }
+.logo .w3 { animation: breathe 3.2s ease-in-out infinite -2.133s; }
+
+@keyframes breathe {
+  0%, 100% { stroke-opacity: .45; }
+  50% { stroke-opacity: 1; }
+}
+
+@keyframes halo {
+  0%, 100% { box-shadow: 0 0 26px rgba(201, 162, 39, 0); }
+  50% { box-shadow: 0 0 26px rgba(201, 162, 39, .18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo__ring, .logo .w1, .logo .w2, .logo .w3 { animation: none; }
+  .logo svg path { stroke-opacity: .85; }
+}
+
+/* ---------- phone screen chrome (matches the real screens' shells) ---------- */
+
+.phone__screen--app { justify-content: flex-start; gap: 0; }
+.scr-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-shrink: 0; }
+.scr-mid { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+.scr-foot { flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+.scr-cta {
+  border-radius: 14px;
+  padding: 15px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  background: var(--gold);
+  color: var(--bg);
+}
+.scr-cta--muted { background: transparent; border: 1px solid var(--hair); color: var(--faint); font-weight: 400; letter-spacing: .02em; }
+.scr-wordmark { font-family: var(--font-display); font-size: 11px; letter-spacing: .34em; color: var(--gold); text-align: center; }
+.scr-badge {
+  align-self: center;
+  font-size: 12px;
+  letter-spacing: .1em;
+  color: var(--gold-light);
+  border: 1px solid var(--gold-50);
+  border-radius: 999px;
+  padding: 4px 14px;
+}
+
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div>
+        <div class="logo">
+          <div class="logo__ring"></div>
+          <svg viewBox="0 0 120 120" fill="none" stroke="#C9A227" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+            <path class="w1" d="M22 44C34 24 54 58 68 38C82 18 94 26 104 46"></path>
+            <path class="w2" d="M18 60C32 40 52 74 66 54C80 34 96 42 106 62"></path>
+            <path class="w3" d="M22 76C34 56 54 90 68 70C82 50 94 58 104 78"></path>
+          </svg>
+        </div>
+        <h1 class="hero__title">頭殼活</h1>
+        <div class="hero__romaji">THAU-KHAK-UAH</div>
+        <p class="hero__lead">
+          3～8 個人、同一個 Wi-Fi，掃個碼就開局的手機派對遊戲。
+          每個人手上有一個只有自己看得到的秘密數字 <em>1～10</em>，
+          用一句回答把它演出來——然後把手機蓋在桌上，等當輪的評量員一支一支翻開。
+        </p>
+        <div class="cta-row">
+          <a class="store-badge" href="#" aria-label="從 App Store 下載頭殼活">
+            <svg width="26" height="26" viewBox="0 0 384 512" fill="#FFFFFF" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg>
+            <span class="store-badge__txt"><small>Download on the</small><b>App Store</b></span>
+          </a>
+          <a class="store-badge store-badge--play" href="#" aria-label="在 Google Play 上取得頭殼活">
+            <svg width="24" height="24" viewBox="0 0 512 512" aria-hidden="true">
+              <path fill="#00D0FF" d="M47.6 24.5C41.4 31 37.8 41.2 37.8 54.3v403.4c0 13.1 3.6 23.3 9.8 29.8l1.4 1.3L274.6 262.6v-5.3L48.9 23.2l-1.3 1.3z"></path>
+              <path fill="#FFD900" d="M349.8 338l-75.2-75.4v-5.3l75.3-75.4 1.7 1L440.9 234c25.5 14.5 25.5 38.2 0 52.7l-89.3 50.8-1.8.5z"></path>
+              <path fill="#FF3A44" d="M351.6 337l-77-77.1L47.6 487.5c8.4 8.9 22.3 10 38 1.1l266-151.6z"></path>
+              <path fill="#00F076" d="M351.6 182.9L85.6 31.4c-15.7-8.9-29.6-7.8-38 1.1l227 227.4 77-76.9z"></path>
+            </svg>
+            <span class="store-badge__txt"><small>Get it on</small><b>Google Play</b></span>
+          </a>
+        </div>
+        <p class="section__note" style="font-size: 14px; margin-top: 14px;">［上架連結待補］</p>
+        <div class="facts">
+          <span class="chip"><b>3–8</b> 人</span>
+          <span class="chip">免帳號</span>
+          <span class="chip">無雲端伺服器</span>
+          <span class="chip">遊戲本身不需行動網路</span>
+          <span class="chip"><b>350</b> 題原創題庫</span>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="phone__screen" style="justify-content: center; align-items: stretch; text-align: center; gap: 0;">
+          <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;">
+            <svg viewBox="0 0 120 120" width="128" height="128" fill="none" stroke="#C9A227" stroke-opacity=".85" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <path d="M22 44C34 24 54 58 68 38C82 18 94 26 104 46"></path>
+              <path d="M18 60C32 40 52 74 66 54C80 34 96 42 106 62"></path>
+              <path d="M22 76C34 56 54 90 68 70C82 50 94 58 104 78"></path>
+            </svg>
+            <div style="font-family: var(--font-heading); font-size: 30px; font-weight: 700; letter-spacing: .1em; text-indent: .1em; margin-top: 20px;">頭殼活</div>
+            <div style="font-family: var(--font-display); font-size: 12px; letter-spacing: .42em; color: var(--gold); margin-top: 9px;">THAU-KHAK-UAH</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="scr-dim" style="font-size: 13px;">今日免費輪　剩 3 次</div>
+            <div class="home-btn home-btn--gold">建立房間</div>
+            <div class="home-btn home-btn--ghost">加入房間</div>
+            <div class="nick-chip"><span class="av">阿</span>阿明 <span style="color: var(--dimmer); font-size: 13px;">· 換暱稱</span></div>
+            <div style="font-size: 13px; color: var(--faint);">玩法說明 · 設定</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <div class="eyebrow">The Scale</div>
+      <h2 class="section__title">題目是一條刻度</h2>
+      <p class="section__note">每題都有兩端。你抽到的數字，決定你的答案該落在這條線的哪個位置——說得太準或太偏，都會害評量員排錯。</p>
+    </div>
+
+    <div class="scale-grid">
+      <div class="card">
+        <div class="label" style="color: rgba(201, 162, 39, .85);">刻　度</div>
+        <p class="card__body">題目是一條刻度，例如<b>「說出一種早餐店會賣的東西」</b>，1 是最少人點、10 是最多人點。你抽到 8，就要講一個相當多人點、但還不到第一名的品項。</p>
+        <div class="scale">
+          <div class="scale__row">
+            <span class="numeral" style="font-size: 15px;">1</span>
+            <div class="scale__bar"></div>
+            <span class="numeral" style="font-size: 15px;">10</span>
+          </div>
+          <div class="scale__cap"><span>最少人點</span><span>最多人點</span></div>
+        </div>
+      </div>
+
+      <ul class="scale-aside">
+        <li><span class="numeral">1</span><span><b>羅宋湯</b>——有是有，但幾乎沒人點。</span></li>
+        <li><span class="numeral">5</span><span><b>蘿蔔糕</b>——很常見，不到人人必點。</span></li>
+        <li><span class="numeral">8</span><span><b>火腿蛋吐司</b>——相當多人點，還沒到榜首。</span></li>
+        <li><span class="numeral">10</span><span><b>大冰奶</b>——幾乎人人都會來一杯。</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <div class="eyebrow">How to play</div>
+      <h2 class="section__title">一輪長這樣</h2>
+      <p class="section__note">七個步驟跑完就是一輪。點左邊的步驟看每一步手機上會發生什麼事。</p>
+    </div>
+
+    <div class="steps">
+      <input type="radio" name="step" id="st1" checked>
+      <input type="radio" name="step" id="st2">
+      <input type="radio" name="step" id="st3">
+      <input type="radio" name="step" id="st4">
+      <input type="radio" name="step" id="st5">
+      <input type="radio" name="step" id="st6">
+      <input type="radio" name="step" id="st7">
+
+      <div class="steps__grid">
+        <ol class="steps__nav">
+          <li><label for="st1"><span class="rn">I</span>抽評量員</label></li>
+          <li><label for="st2"><span class="rn">II</span>選分類</label></li>
+          <li><label for="st3"><span class="rn">III</span>公布題目 · 發牌</label></li>
+          <li><label for="st4"><span class="rn">IV</span>作答</label></li>
+          <li><label for="st5"><span class="rn">V</span>卡背等待</label></li>
+          <li><label for="st6"><span class="rn">VI</span>翻牌</label></li>
+          <li><label for="st7"><span class="rn">VII</span>算成績</label></li>
+        </ol>
+
+        <div class="steps__stage">
+          <div class="panel" data-step="1">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">出　題</span></div>
+              <div class="scr-mid" style="align-items: center; text-align: center;">
+                <svg viewBox="0 0 120 120" width="120" height="120" fill="none" stroke="#C9A227" stroke-opacity=".85" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+                  <path d="M22 44C34 24 54 58 68 38C82 18 94 26 104 46"></path>
+                  <path d="M18 60C32 40 52 74 66 54C80 34 96 42 106 62"></path>
+                  <path d="M22 76C34 56 54 90 68 70C82 50 94 58 104 78"></path>
+                </svg>
+                <div class="scr-title" style="margin-top: 18px;">評量員選題中…</div>
+                <p class="scr-dim" style="margin-top: 16px;">請稍候，題目公開後會自動顯示</p>
+              </div>
+              <div class="scr-foot"><div class="scr-cta scr-cta--muted">等待評量員出題</div></div>
+            </div></div>
+          </div>
+
+          <div class="panel" data-step="2">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">出　題</span><span class="scr-badge">你是評量員</span></div>
+              <div class="scr-mid" style="gap: 14px;">
+                <div>
+                  <div style="font-family: var(--font-heading); font-size: 24px; font-weight: 700;">選一個分類</div>
+                  <p class="scr-dim" style="font-size: 14px; margin-top: 6px;">選好分類後，題目會從裡面隨機出一題</p>
+                </div>
+                <div class="cat-grid">
+                  <div class="cat-cell">生活日常</div>
+                  <div class="cat-cell">人際社交</div>
+                  <div class="cat-cell">在地文化</div>
+                  <div class="cat-cell cat-cell--random">隨　機</div>
+                </div>
+              </div>
+              <div class="scr-foot"><div class="scr-cta">確定分類</div></div>
+            </div></div>
+          </div>
+
+          <div class="panel" data-step="3">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">公 布 題 目</span></div>
+              <div class="scr-mid" style="gap: 16px;">
+                <div style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; line-height: 1.45;">說出一種早餐店會賣的東西</div>
+                <div class="scale">
+                  <div class="scale__row">
+                    <span class="numeral" style="font-size: 14px;">1</span>
+                    <div class="scale__bar"></div>
+                    <span class="numeral" style="font-size: 14px;">10</span>
+                  </div>
+                  <div class="scale__cap" style="font-size: 13px;"><span>最少人點</span><span>最多人點</span></div>
+                </div>
+                <div style="text-align: center;">
+                  <div class="scr-label">你 的 數 字 牌</div>
+                  <div class="num-card" style="margin: 12px auto 0;">8</div>
+                </div>
+              </div>
+              <div class="scr-foot">
+                <div class="scr-dim" style="font-size: 13px; text-align: center;">等待其他玩家確認…</div>
+                <div class="scr-cta">確定</div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="panel" data-step="4">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">作　答</span><span class="numeral" style="font-size: 22px;">168 秒</span></div>
+              <div class="scr-mid" style="gap: 14px;">
+                <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 700; line-height: 1.45;">說出一種早餐店會賣的東西</div>
+                <div style="font-size: 15px; color: rgba(242, 240, 234, .6);">你的數字牌　8</div>
+                <div class="answer-box">輸入你的答案</div>
+                <div class="scr-dim" style="font-size: 13px;">已有 2 人送出答案</div>
+              </div>
+              <div class="scr-foot">
+                <div class="scr-dim" style="font-size: 13px; text-align: center;">口說與表演題不用打字，全體同時進行</div>
+                <div class="scr-cta">送出答案</div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="panel" data-step="5">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">卡 背 等 待</span></div>
+              <div class="scr-mid" style="gap: 16px;">
+                <div class="card-back">
+                  <svg viewBox="0 0 120 120" width="92" height="92" fill="none" stroke="#C9A227" stroke-opacity=".85" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+                    <path d="M22 44C34 24 54 58 68 38C82 18 94 26 104 46"></path>
+                    <path d="M18 60C32 40 52 74 66 54C80 34 96 42 106 62"></path>
+                    <path d="M22 76C34 56 54 90 68 70C82 50 94 58 104 78"></path>
+                  </svg>
+                </div>
+                <div class="scr-dim" style="font-size: 14px; text-align: center;">等待評量員翻牌</div>
+                <div class="mini-card">
+                  <div class="scr-label">你 的 答 案</div>
+                  <div style="font-size: 16px; margin-top: 6px;">奶茶</div>
+                </div>
+              </div>
+              <div class="scr-foot"><div class="scr-wordmark">THAU-KHAK-UAH</div></div>
+            </div></div>
+          </div>
+
+          <div class="panel" data-step="6">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">已 揭 曉</span></div>
+              <div class="scr-mid" style="align-items: center; text-align: center;">
+                <div class="reveal-num">8</div>
+                <div class="scr-dim" style="font-size: 14px; margin-top: 10px;">阿明 的數字</div>
+                <div class="pill" style="margin-top: 18px;"><span class="ok">✓</span>順序正確 · 第 4 個翻</div>
+              </div>
+              <div class="scr-foot"><div class="scr-cta scr-cta--muted">已翻 4／5 · 本輪錯誤 0</div></div>
+            </div></div>
+          </div>
+
+          <div class="panel" data-step="7">
+            <div class="phone"><div class="phone__screen phone__screen--app">
+              <div class="scr-top"><span class="scr-label">結　算</span></div>
+              <div class="scr-mid" style="gap: 8px;">
+                <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px;">
+                  <span style="font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--error);">本輪失敗</span>
+                  <span style="font-size: 13px; color: var(--dimmer);">錯誤次數：2</span>
+                </div>
+                <div class="rank-row"><span class="ok">✓</span><span class="nm">阿明</span><span class="dt">第 1 個翻 · 數字 2</span></div>
+                <div class="rank-row"><span class="ok">✓</span><span class="nm">小美</span><span class="dt">第 2 個翻 · 數字 5</span></div>
+                <div class="rank-row"><span class="no">✕</span><span class="nm">阿華</span><span class="dt">第 3 個翻 · 數字 9</span></div>
+                <div class="rank-row"><span class="no">✕</span><span class="nm">小天</span><span class="dt">第 4 個翻 · 數字 8</span></div>
+              </div>
+              <div class="scr-foot"><div class="scr-cta">免費繼續下一輪（剩 2 次）</div></div>
+            </div></div>
+          </div>
+        </div>
+
+        <div class="steps__copy">
+          <div class="panel panel--copy" data-step="1">
+            <div class="rn">I</div><h3>抽評量員</h3>
+            <p>每輪隨機抽一位評量員，上一輪當過的人不會連兩輪。評量員這輪不拿數字牌，也不作答。</p>
+            <p class="aside">其他人這時候只看到等待畫面——題目還沒公開，誰也不知道會抽到什麼。</p>
+          </div>
+          <div class="panel panel--copy" data-step="2">
+            <div class="rn">II</div><h3>選分類</h3>
+            <p>評量員從三個分類加一張「隨機」挑一張，題目再從裡面隨機抽出——他自己也是選完才看到題目。</p>
+            <p class="aside">題庫共 7 個分類：生活日常、在地文化、人際社交、工作職場、腦洞創意、自我揭露、感情關係。</p>
+          </div>
+          <div class="panel panel--copy" data-step="3">
+            <div class="rn">III</div><h3>公布題目 · 發牌</h3>
+            <p>題目和刻度送到每個人手機，同時發數字牌。看完按「確定」，全員按完才往下走。</p>
+            <p class="aside">數字牌只送到擁有者自己的連線上。房主的手機雖然是這場遊戲的伺服器，畫面上也一樣看不到別人的數字。</p>
+          </div>
+          <div class="panel panel--copy" data-step="4">
+            <div class="rn">IV</div><h3>作答</h3>
+            <p>打字題 180 秒內送出，逾時系統幫你送出「（未作答）」。口說和表演題則是全體同時進行，不打字。</p>
+            <p class="aside">350 題分成三種題型：口說、打字、表演。題庫隨 App 打包，出題不需要連外網。</p>
+          </div>
+          <div class="panel panel--copy" data-step="5">
+            <div class="rn">V</div><h3>卡背等待</h3>
+            <p>手機轉成卡背，放桌上別再碰它。打字題會留著你剛送出的答案，給評量員邊看邊排。</p>
+            <p class="aside">這一步是真的把手機蓋到桌面中央——卡背不是一個抽象的 UI 狀態，它就是桌上那張牌。</p>
+          </div>
+          <div class="panel panel--copy" data-step="6">
+            <div class="rn">VI</div><h3>翻牌</h3>
+            <p>評量員照心中的順序，一支一支去點別人的手機螢幕。點下去，那支手機才揭曉數字。</p>
+            <p class="aside">翻牌順序由房主在設定裡決定：由小到大（預設），或由大到小。</p>
+          </div>
+          <div class="panel panel--copy" data-step="7">
+            <div class="rn">VII</div><h3>算成績</h3>
+            <p>翻開的順位對上名次才算對，錯一個記一次失誤。全部對上，本輪成功。失誤不累積到下一輪。</p>
+            <p class="aside">名次是發牌當下就依數字大小算好的，每輪各自結算，不跨輪累計。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <div class="eyebrow">Features</div>
+      <h2 class="section__title">遊戲特點</h2>
+      <p class="section__note">這不是一款把桌遊搬上螢幕的遊戲，而是把手機本身變成桌上的道具。</p>
+    </div>
+
+    <div class="feat-grid">
+      <div class="feat">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10.5 18.5h3"></path></svg>
+        <h3>手機即實體道具</h3>
+        <p>送出答案後，手機轉成卡背、真的蓋在桌面中央。翻牌不是點一顆 UI 按鈕，是評量員伸手去點你那支手機的螢幕。</p>
+      </div>
+      <div class="feat">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"></path><circle cx="12" cy="12" r="2.4"></circle><path d="M4 20 20 4"></path></svg>
+        <h3>資訊不對稱是核心</h3>
+        <p>數字牌只有擁有者的裝置讀得到。伺服器只把數字送給該玩家自己的連線，其他人收到的訊息裡根本沒有這個欄位。</p>
+      </div>
+      <div class="feat">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="8" height="14" rx="2"></rect><rect x="13.5" y="5" width="8" height="14" rx="2"></rect><path d="M10.5 12h3"></path></svg>
+        <h3>沒有雲端，也沒有帳號</h3>
+        <p>房主的手機自己開一個區域網路伺服器，就是這場遊戲唯一的伺服器。所有狀態只在記憶體裡，房間關掉就消失，不落地也不上雲。</p>
+      </div>
+      <div class="feat">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"></path><path d="m3 12.5 9 4.5 9-4.5"></path><path d="m3 17 9 4.5 9-4.5"></path></svg>
+        <h3>350 題原創題庫</h3>
+        <p>7 個分類、3 種題型：口說、打字、表演。題庫隨 App 一起打包在裝置上，出題不需要連外網。</p>
+      </div>
+      <div class="feat">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"></path><path d="M20 3v4h-4"></path></svg>
+        <h3>每輪換人當評量員</h3>
+        <p>系統每輪隨機指定，而且會排除上一輪的評量員，不會連兩輪都是同一個人。當評量員的那輪不拿牌、不作答。</p>
+      </div>
+      <div class="feat">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16"></path><path d="m3.5 16.5 3.5 3.5 3.5-3.5"></path><path d="M17 20V4"></path><path d="m13.5 7.5 3.5-3.5 3.5 3.5"></path></svg>
+        <h3>翻牌順序可調</h3>
+        <p>房主可以在設定裡選由小到大（預設）或由大到小，決定名次從哪一頭算起。同一批題目換個方向就是另一種手感。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <div class="eyebrow">Before you start</div>
+      <h2 class="section__title">遊戲限制</h2>
+    </div>
+
+    <ol class="limits">
+      <li>
+        <span class="ix">I</span>
+        <div>
+          <h3>3～8 人</h3>
+          <p>未滿 3 人時「開始遊戲」是停用的；遊戲中人數掉到 3 人以下，房間會結束。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">II</span>
+        <div>
+          <h3>所有人必須在同一個區域網路</h3>
+          <p>同一台 Wi-Fi 路由器，或房主開的個人熱點。不支援跨網路、跨行動數據連線遊玩。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">III</span>
+        <div>
+          <h3>房主的手機要一直開著 App</h3>
+          <p>房主的手機就是伺服器。切到背景或關掉 App，房間就結束，而且不能轉移給其他裝置。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">IV</span>
+        <div>
+          <h3>每 24 小時 3 輪免費</h3>
+          <p>額度從你這個視窗內第一次用免費輪起算，滿 24 小時重置。用完之後，建立或加入房間、以及之後的每一輪，都要先看一次 60 秒廣告。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">V</span>
+        <div>
+          <h3>額度是每台裝置各自計算</h3>
+          <p>不分房主或一般玩家，只要在線就算玩了一輪（包含那輪的評量員）。房主看完廣告不代表全房間都解鎖。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">VI</span>
+        <div>
+          <h3>看廣告需要對外網路</h3>
+          <p>遊戲本身純區網就能跑，但廣告要連得出去。沒有對外連線時廣告會載不出來，只能等或改用還沒到期的免費輪。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">VII</span>
+        <div>
+          <h3>換裝置就是新玩家</h3>
+          <p>斷線後用同一台手機可以自動歸隊，座位和資料都留著；換一支手機則要請房主先移除舊的離線座位再重新加入。</p>
+        </div>
+      </li>
+      <li>
+        <span class="ix">VIII</span>
+        <div>
+          <h3>目前只有繁體中文</h3>
+          <p>介面與 350 題題庫都是 zh-Hant，題目也有不少在地文化梗，暫時沒有其他語系。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <div class="eyebrow">Privacy</div>
+      <h2 class="section__title">你的資料哪裡也沒去</h2>
+    </div>
+
+    <div class="privacy">
+      <div class="card">
+        <p class="card__body" style="margin-top: 0;">本 App 沒有帳號系統、沒有雲端資料庫。遊戲全程在同一區域網路的裝置之間直接連線，資料不會經過我們的伺服器。我們唯一使用的第三方服務是 <b>Google AdMob</b> 的獎勵廣告。</p>
+        <p class="card__body" style="font-size: 15px; color: var(--dim);">完整條款請見<a href="privacy.html">隱私權政策</a>。</p>
+      </div>
+
+      <ul>
+        <li><span class="tick">✓</span><span>不需註冊，不收集姓名、電話或 email。</span></li>
+        <li><span class="tick">✓</span><span>相機權限只用來掃 QR Code 加入房間，畫面即時處理、不儲存也不傳送。</span></li>
+        <li><span class="tick">✓</span><span>免費輪額度只記在你自己的裝置上，不同步到雲端。</span></li>
+        <li><span class="tick">✓</span><span>暱稱、答案、翻牌與名次只在同一區網的裝置間傳輸，房間結束就消失。</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div>頭殼活（Thau-Khak-Uah） · TerriDev</div>
+      <div class="foot-links">
+        <a href="privacy.html">隱私權政策</a>
+        <a href="mailto:ting2discover@gmail.com">ting2discover@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
