@@ -1,35 +1,672 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-    <head>
-        <title>超慢跑計時器</title>
-    <body>
-            <div class="page-content">
-                <div class="container">
-                    <h2><img src="images/icon.png" alt="超慢跑計時器" width="80" style="margin-right: 10px;">超慢跑計時器</h2>
-                    <p>超慢跑計時器為您提供簡潔與直覺操作，選擇時間與速度後，隨時隨地開始運動。</p>
-                    <p align="center">
-                        <div style="display: inline-block; text-align: center; width: 200px; margin-right: 10px;">
-                            <img src="images/pg_home.png" alt="Home" style="width: 100%;"><br>
-                            <span style="display: block;">基礎模式選擇速度和時間就可以馬上開始</span>
-                        </div>
-                        <div style="display: inline-block; text-align: center; width: 200px; margin-right: 10px;">
-                            <img src="images/pg_frequency.png" alt="Frequency" style="width: 100%;"><br>
-                            <span style="display: block;">變頻模式可以選擇挑戰模式變換速度</span>
-                        </div>
-                        <div style="display: inline-block; text-align: center; width: 200px; margin-right: 10px;">
-                            <img src="images/pg_record.png" alt="Record" style="width: 100%;"><br>
-                            <span style="display: block;">記錄每日的努力過程，汗水不會白流</span>
-                        </div>
-                        <div style="display: inline-block; text-align: center; width: 200px; margin-right: 10px;">
-                            <img src="images/pg_add_pattern.png" alt="AddPattern" style="width: 100%;"><br>
-                            <span style="display: block;">自訂喜歡的時間和速度，跑出自己的節奏來</span>
-                        </div>
-                    </p>
-                    <p><a href="https://www.facebook.com/p/%E8%B6%85%E6%85%A2%E8%B7%91%E8%A8%98%E6%99%82%E5%99%A8-100090574330465/">FB 粉絲專頁</a></p>
-                    <p><a href="/slowjog/privacy.html">隱私權政策</a></p>
-                    <p><a href="https://apps.apple.com/tw/app/%E8%B6%85%E6%85%A2%E8%B7%91%E8%A8%88%E6%99%82%E5%99%A8/id6445976187">iOS 下載</a></p>
-                </div>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超慢跑計時器</title>
+<meta name="description" content="挑一個分鐘數，挑一個步頻，然後就開始跑。超慢跑計時器用節拍聲帶你維持穩定步頻，內建變頻課表與月曆紀錄，免費、不用註冊。">
+<meta name="theme-color" content="#E3FDFD">
+<link rel="icon" href="images/icon.png">
+<link rel="apple-touch-icon" href="images/icon.png">
+<meta property="og:title" content="超慢跑計時器">
+<meta property="og:description" content="挑一個分鐘數，挑一個步頻，然後就開始跑。">
+<meta property="og:image" content="https://terricome.site/slowjog/images/icon.png">
+<meta property="og:url" content="https://terricome.site/slowjog/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+  :root {
+    --bg: #E3FDFD;
+    --teal: #71C9CE;
+    --teal-mid: #A6E3E9;
+    --teal-pale: #CBF1F5;
+    --ink: #3f3b55;
+    --sub: #426B6E;
+    --muted: #A1A1A1;
+    --track: #F3F3F3;
+    --white: #FFFFFF;
+    --display: 'Baloo 2', 'Noto Sans TC', 'PingFang TC', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Heiti TC', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--sub); text-decoration: none; }
+  a:hover { color: var(--ink); }
+
+  h1, h2, h3 { font-family: var(--display); }
+
+  .wrap { max-width: 1248px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---- nav ---- */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 42px; height: 42px; border-radius: 11px; display: block; }
+  .brand span { font-family: var(--display); font-size: 21px; font-weight: 700; }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { font-size: 16px; font-weight: 500; }
+
+  /* ---- buttons ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 0;
+    border-radius: 30px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px 32px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--teal); color: var(--white); }
+  .btn-primary:hover { background: #5fb8bd; color: var(--white); }
+  .btn-secondary { background: var(--white); color: var(--ink); }
+  .btn-secondary:hover { background: #f4fbfb; color: var(--ink); }
+  .btn-sm { font-size: 16px; padding: 11px 24px; }
+
+  /* ---- hero ---- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 64px;
+    padding: 48px 0 88px;
+  }
+  .pill {
+    display: inline-block;
+    background: var(--white);
+    color: var(--sub);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 30px;
+    margin-bottom: 26px;
+  }
+  .hero h1 {
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 1.22;
+    font-weight: 800;
+    margin: 0 0 22px;
+    text-wrap: pretty;
+  }
+  .lede {
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--sub);
+    margin: 0 0 32px;
+    max-width: 540px;
+    text-wrap: pretty;
+  }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+  .fine { font-size: 14px; color: var(--muted); margin: 0; }
+
+  /* ---- interactive demo ---- */
+  .demo-col { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .phone {
+    width: 372px;
+    padding: 14px;
+    background: var(--white);
+    border-radius: 44px;
+    box-shadow: 0 26px 60px rgba(63, 59, 85, .16);
+  }
+  .screen {
+    background: var(--bg);
+    border-radius: 32px;
+    padding: 22px 10px 14px;
+  }
+  .screen-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-bottom: 6px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .screen-top .music { display: flex; align-items: center; gap: 6px; }
+
+  .ring-box {
+    position: relative;
+    width: min(264px, 72vw);
+    aspect-ratio: 1;
+    margin: 4px auto 10px;
+  }
+  .ring-box svg { display: block; width: 100%; height: 100%; }
+  #ringThumb {
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    transform: translate(-50%, -50%);
+  }
+  #clock {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(40px, 21cqw, 56px);
+    font-size: min(56px, 15vw);
+    font-weight: 700;
+  }
+
+  .volume { display: flex; align-items: center; gap: 10px; padding: 0 12px; margin-bottom: 14px; }
+  .volume-track { flex-grow: 1; position: relative; height: 3px; background: var(--muted); }
+  .volume-fill { position: absolute; left: 0; top: 0; height: 3px; width: 62%; background: var(--ink); }
+  .volume-thumb {
+    position: absolute;
+    left: 62%;
+    top: -12px;
+    width: 26px;
+    height: 26px;
+    margin-left: -13px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 1px 4px rgba(63, 59, 85, .28);
+  }
+
+  .field-label { font-size: 16px; font-weight: 700; padding: 0 12px; margin-bottom: 6px; }
+  .seg {
+    display: flex;
+    background: var(--track);
+    border-radius: 6px;
+    margin: 0 10px 14px;
+    overflow: hidden;
+  }
+  .seg button {
+    flex-grow: 1;
+    border: 0;
+    background: transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 15px 0;
+    min-height: 44px;
+    cursor: pointer;
+  }
+  .seg button[aria-pressed="true"] { background: var(--teal); color: var(--ink); font-weight: 700; }
+
+  .controls { display: flex; gap: 12px; margin: 2px 10px 0; }
+  .controls .btn { flex-grow: 1; font-size: 20px; padding: 16px 0; }
+  .btn-stop { background: var(--teal-pale); color: var(--white); }
+  .btn-stop:hover { background: #bce9ee; color: var(--white); }
+
+  .tabbar { display: flex; padding: 14px 0 8px; }
+  .tabbar div { flex-grow: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--sub); }
+  .tabbar .on { color: #635985; font-weight: 700; }
+
+  /* ---- sections ---- */
+  .band-white { background: var(--white); }
+  .section { padding: 80px 0; }
+  .section h2 {
+    font-size: clamp(30px, 3.4vw, 42px);
+    font-weight: 800;
+    margin: 0 0 14px;
+    text-wrap: pretty;
+  }
+  .section .lede { margin-bottom: 44px; max-width: 640px; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .card { background: var(--bg); border-radius: 24px; padding: 34px 30px; }
+  .band-white .card { background: var(--bg); }
+  .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .card-head h3 { font-size: 26px; font-weight: 700; margin: 0; }
+  .card p { font-size: 16px; line-height: 1.85; color: var(--sub); margin: 0 0 24px; }
+  .card-demo { background: var(--white); border-radius: 16px; padding: 20px; }
+  .card-demo .mini-label { font-size: 13px; font-weight: 700; margin-bottom: 7px; }
+  .mini-seg { display: flex; background: var(--track); border-radius: 6px; overflow: hidden; }
+  .mini-seg span { flex-grow: 1; text-align: center; padding: 10px 0; font-size: 14px; color: var(--muted); }
+  .mini-seg span.on { background: var(--teal-mid); color: var(--ink); font-weight: 700; border-radius: 6px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: var(--bg);
+    border: 2px solid var(--white);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-size: 14px;
+  }
+  .chip.on { background: var(--teal-mid); font-weight: 700; }
+  .chip.add { border-style: dashed; border-color: var(--muted); color: var(--sub); display: inline-flex; align-items: center; gap: 5px; }
+
+  .cal-head, .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .cal-head { margin-bottom: 8px; }
+  .cal-head span { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .cal-grid span {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .cal-grid span.done { background: var(--teal); color: var(--white); font-weight: 700; border-radius: 50%; }
+
+  .beat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+  .beat h2 { margin-bottom: 18px; }
+  .beat p { font-size: 18px; line-height: 1.85; color: var(--sub); margin: 0 0 18px; }
+  .sounds { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
+  .sound {
+    background: var(--white);
+    border-radius: 30px;
+    padding: 13px 24px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .sound.on { background: var(--teal); color: var(--white); }
+  .volume-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 24px 28px;
+  }
+  .volume-card .note { font-size: 14px; color: var(--muted); white-space: nowrap; }
+
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 36px;
+    background: var(--bg);
+    border-radius: 32px;
+    padding: 52px 56px;
+    margin-bottom: 44px;
+  }
+  .cta h2 { font-size: clamp(28px, 3vw, 38px); margin: 0 0 10px; }
+  .cta p { font-size: 17px; line-height: 1.8; color: var(--sub); margin: 0; }
+
+  footer { background: var(--white); padding: 0 0 40px; }
+  .foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 28px;
+    border-top: 1px solid var(--bg);
+  }
+  .foot .who { display: flex; align-items: center; gap: 11px; font-size: 14px; color: var(--muted); }
+  .foot .who img { width: 30px; height: 30px; border-radius: 8px; display: block; }
+  .foot-links { display: flex; gap: 26px; font-size: 15px; }
+
+  /* ---- responsive ---- */
+  @media (max-width: 1000px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 44px; padding-bottom: 64px; }
+    .cards { grid-template-columns: minmax(0, 1fr); }
+    .beat { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  }
+
+  @media (max-width: 760px) {
+    .nav-links a:not(.btn) { display: none; }
+    .section { padding: 56px 0; }
+    .cta { padding: 34px 26px; }
+    .cta-row .btn, .cta .btn { flex-grow: 1; }
+    .volume-card .note { display: none; }
+  }
+
+  @media (max-width: 440px) {
+    .wrap { padding: 0 16px; }
+    .phone {
+      width: 100%;
+      padding: 0;
+      border-radius: 28px;
+      box-shadow: none;
+    }
+    .screen { border-radius: 28px; }
+    .brand span { font-size: 18px; }
+    .card { padding: 26px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="nav">
+    <div class="brand">
+      <img src="images/icon.png" alt="">
+      <span>超慢跑計時器</span>
+    </div>
+    <div class="nav-links">
+      <a href="#tabs">功能</a>
+      <a href="#beat">節拍</a>
+      <a href="privacy.html">隱私權政策</a>
+      <a class="btn btn-primary btn-sm" href="https://apps.apple.com/tw/app/id6445976187">免費下載</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="pill">不用跑道，不用配速表</div>
+      <h1>挑一個分鐘數<br>挑一個步頻<br>然後就開始跑。</h1>
+      <p class="lede">超慢跑靠的是穩定的步頻，不是速度。設定好時間與每分鐘幾步，跟著節拍聲跑就好——眼睛不用一直盯著手機。</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://apps.apple.com/tw/app/id6445976187">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8c-1.5 0-2.9.9-3.7 2.2-1.6 2.8-.4 6.9 1.1 9.1.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.2.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.6zM14.1 5.8c.6-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.8-1.4z"/></svg>
+          App Store 下載
+        </a>
+        <a class="btn btn-secondary" href="https://play.google.com/store/apps/details?id=com.run.veryslowjogging">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#3f3b55" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.5.8-.5 1.4v16.6c0 .6.2 1.1.5 1.4l.1.1 9.3-9.3v-.2L3.7 2.2l-.1.1zM16.3 15.6l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2l-3.7 2.1-.1-.1zM15.5 16.4L12.3 13.2 3 22.5c.4.4 1 .4 1.7.1l10.8-6.2M15.5 7.6L4.7 1.4C4 1 3.4 1.1 3 1.5l9.3 9.3 3.2-3.2z"/></svg>
+          Google Play
+        </a>
+      </div>
+      <p class="fine">免費下載 · 支援 iOS 與 Android · 計時在背景也繼續跑</p>
+    </div>
+
+    <div class="demo-col">
+      <div class="phone">
+        <div class="screen">
+          <div class="screen-top">
+            <div class="music">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#3f3b55" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.8"/><circle cx="16.5" cy="16" r="2.8"/></svg>
+              <span>預設-1</span>
             </div>
+            <span>累積：<span id="acc">0</span> 分</span>
+          </div>
+
+          <div class="ring-box">
+            <svg viewBox="0 0 264 264" aria-hidden="true">
+              <circle cx="132" cy="132" r="112" fill="none" stroke="#FFFFFF" stroke-width="7"></circle>
+              <circle id="ringArc" cx="132" cy="132" r="112" fill="none" stroke="#71C9CE" stroke-width="7"
+                      stroke-linecap="round" stroke-dasharray="0 703.7" transform="rotate(-90 132 132)"></circle>
+            </svg>
+            <img id="ringThumb" src="images/unicorn.png" alt="">
+            <div id="clock" role="timer" aria-live="off">5:00</div>
+          </div>
+
+          <div class="volume">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3f3b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h3l4-4v14l-4-4H4z"/></svg>
+            <div class="volume-track"><div class="volume-fill"></div><div class="volume-thumb"></div></div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3f3b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h3l4-4v14l-4-4H4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </div>
+
+          <div class="field-label" id="minLabel">運動時間(分鐘)：</div>
+          <div class="seg" id="minSeg" role="group" aria-labelledby="minLabel"></div>
+
+          <div class="field-label" id="spmLabel">步頻(步/分)：</div>
+          <div class="seg" id="spmSeg" role="group" aria-labelledby="spmLabel"></div>
+
+          <div class="controls" id="controls"></div>
+
+          <div class="tabbar">
+            <div class="on">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#635985" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.516 7C3.558 8.43 3 10.15 3 12c0 4.971 4.029 9 9 9s9-4.029 9-9c0-4.971-4.029-9-9-9v3M12 12L8 8"/></svg>
+              <span>基礎</span>
+            </div>
+            <div>
+              <svg width="26" height="26" viewBox="0 0 1024 1024" fill="#426B6E" aria-hidden="true"><path d="M170.7 810.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M341.3 853.3m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M512 704m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M682.7 746.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M853.3 661.3m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M834.1 622.9l-155.7 78.9-177.1-44.8-170.7 149.3-149.3-36.3-21.3 81.1 192 49.1 170.7-149.3 164.3 40.5 185.6-91.7z"/><path d="M170.7 426.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M341.3 469.3m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M512 320m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M682.7 426.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M853.3 170.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M817.1 147.2c-44.8 68.3-113.1 170.7-147.2 221.9-25.6-14.9-66.1-42.7-136.5-85.3l-27.7-17.1-177.1 155.7-149.3-36.3-21.3 83.2 192 49.1 164.3-142.9c55.5 34.1 123.7 76.8 138.7 87.5l10.7 10.7 19.2-2.1c23.5-2.1 23.5-2.1 202.7-275.2l-68.3-49.1z"/></svg>
+              <span>變頻</span>
+            </div>
+            <div>
+              <svg width="26" height="24" viewBox="0 0 23.707 21.598" fill="#426B6E" aria-hidden="true"><path d="M3.68 21.598L19.688 21.598C22.137 21.598 23.355 20.379 23.355 17.965L23.355 3.656C23.355 1.242 22.137 0.023 19.688 0.023L3.68 0.023C1.23 0.023 0 1.23 0 3.656L0 17.965C0 20.391 1.23 21.598 3.68 21.598ZM3.504 19.711C2.461 19.711 1.887 19.16 1.887 18.07L1.887 7.02C1.887 5.941 2.461 5.379 3.504 5.379L19.84 5.379C20.883 5.379 21.469 5.941 21.469 7.02L21.469 18.07C21.469 19.16 20.883 19.711 19.84 19.711ZM9.398 9.586L10.09 9.586C10.5 9.586 10.629 9.469 10.629 9.059L10.629 8.367C10.629 7.957 10.5 7.828 10.09 7.828L9.398 7.828C8.988 7.828 8.848 7.957 8.848 8.367L8.848 9.059C8.848 9.469 8.988 9.586 9.398 9.586ZM13.289 9.586L13.981 9.586C14.391 9.586 14.531 9.469 14.531 9.059L14.531 8.367C14.531 7.957 14.391 7.828 13.981 7.828L13.289 7.828C12.879 7.828 12.738 7.957 12.738 8.367L12.738 9.059C12.738 9.469 12.879 9.586 13.289 9.586ZM17.18 9.586L17.871 9.586C18.281 9.586 18.422 9.469 18.422 9.059L18.422 8.367C18.422 7.957 18.281 7.828 17.871 7.828L17.18 7.828C16.77 7.828 16.641 7.957 16.641 8.367L16.641 9.059C16.641 9.469 16.77 9.586 17.18 9.586ZM5.508 13.418L6.188 13.418C6.609 13.418 6.738 13.301 6.738 12.891L6.738 12.199C6.738 11.789 6.609 11.672 6.188 11.672L5.508 11.672C5.086 11.672 4.957 11.789 4.957 12.199L4.957 12.891C4.957 13.301 5.086 13.418 5.508 13.418ZM9.398 13.418L10.09 13.418C10.5 13.418 10.629 13.301 10.629 12.891L10.629 12.199C10.629 11.789 10.5 11.672 10.09 11.672L9.398 11.672C8.988 11.672 8.848 11.789 8.848 12.199L8.848 12.891C8.848 13.301 8.988 13.418 9.398 13.418ZM13.289 13.418L13.981 13.418C14.391 13.418 14.531 13.301 14.531 12.891L14.531 12.199C14.531 11.789 14.391 11.672 13.981 11.672L13.289 11.672C12.879 11.672 12.738 11.789 12.738 12.199L12.738 12.891C12.738 13.301 12.879 13.418 13.289 13.418ZM17.18 13.418L17.871 13.418C18.281 13.418 18.422 13.301 18.422 12.891L18.422 12.199C18.422 11.789 18.281 11.672 17.871 11.672L17.18 11.672C16.77 11.672 16.641 11.789 16.641 12.199L16.641 12.891C16.641 13.301 16.77 13.418 17.18 13.418ZM5.508 17.262L6.188 17.262C6.609 17.262 6.738 17.133 6.738 16.723L6.738 16.031C6.738 15.621 6.609 15.504 6.188 15.504L5.508 15.504C5.086 15.504 4.957 15.621 4.957 16.031L4.957 16.723C4.957 17.133 5.086 17.262 5.508 17.262ZM9.398 17.262L10.09 17.262C10.5 17.262 10.629 17.133 10.629 16.723L10.629 16.031C10.629 15.621 10.5 15.504 10.09 15.504L9.398 15.504C8.988 15.504 8.848 15.621 8.848 16.031L8.848 16.723C8.848 17.133 8.988 17.262 9.398 17.262ZM13.289 17.262L13.981 17.262C14.391 17.262 14.531 17.133 14.531 16.723L14.531 16.031C14.531 15.621 14.391 15.504 13.981 15.504L13.289 15.504C12.879 15.504 12.738 15.621 12.738 16.031L12.738 16.723C12.738 17.133 12.879 17.262 13.289 17.262Z"/></svg>
+              <span>紀錄</span>
+            </div>
+          </div>
         </div>
-    </body>
+      </div>
+      <p class="fine">↑ 這是真的，可以直接點點看</p>
+    </div>
+  </section>
+</div>
+
+<div class="band-white" id="tabs">
+  <div class="wrap section">
+    <h2>三個分頁，就是全部</h2>
+    <p class="lede">沒有帳號、沒有社群、沒有排行榜壓力。打開就跑，跑完就關。</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-head">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3f3b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.516 7C3.558 8.43 3 10.15 3 12c0 4.971 4.029 9 9 9s9-4.029 9-9c0-4.971-4.029-9-9-9v3M12 12L8 8"/></svg>
+          <h3>基礎</h3>
+        </div>
+        <p>選 5 到 100 分鐘，選 100 到 300 步/分。整趟維持同一個節拍，適合剛開始、或只想安靜跑完的日子。</p>
+        <div class="card-demo">
+          <div class="mini-label">運動時間(分鐘)：</div>
+          <div class="mini-seg" style="margin-bottom: 16px;">
+            <span class="on">5</span><span>10</span><span>15</span><span>20</span><span>25</span>
+          </div>
+          <div class="mini-label">步頻(步/分)：</div>
+          <div class="mini-seg">
+            <span>100</span><span>110</span><span class="on">120</span><span>130</span><span>140</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <svg width="30" height="30" viewBox="0 0 1024 1024" fill="#3f3b55" aria-hidden="true"><path d="M170.7 810.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M341.3 853.3m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M512 704m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M682.7 746.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M853.3 661.3m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M834.1 622.9l-155.7 78.9-177.1-44.8-170.7 149.3-149.3-36.3-21.3 81.1 192 49.1 170.7-149.3 164.3 40.5 185.6-91.7z"/><path d="M170.7 426.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M341.3 469.3m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M512 320m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M682.7 426.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M853.3 170.7m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"/><path d="M817.1 147.2c-44.8 68.3-113.1 170.7-147.2 221.9-25.6-14.9-66.1-42.7-136.5-85.3l-27.7-17.1-177.1 155.7-149.3-36.3-21.3 83.2 192 49.1 164.3-142.9c55.5 34.1 123.7 76.8 138.7 87.5l10.7 10.7 19.2-2.1c23.5-2.1 23.5-2.1 202.7-275.2l-68.3-49.1z"/></svg>
+          <h3>變頻</h3>
+        </div>
+        <p>一趟裡面切換好幾種步頻。內建 11 種課表，從「第一次接觸」一路到「魔王版」，也可以自己排一個。</p>
+        <div class="card-demo">
+          <div class="mini-label" style="margin-bottom: 10px;">變頻模式：</div>
+          <div class="chips">
+            <span class="chip on">第一次接觸</span>
+            <span class="chip">等級一</span>
+            <span class="chip">等級二</span>
+            <span class="chip">等級三</span>
+            <span class="chip">間歇版</span>
+            <span class="chip">魔王版</span>
+            <span class="chip add">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#426B6E" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M5 12h14"/></svg>
+              自訂
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <svg width="30" height="27" viewBox="0 0 23.707 21.598" fill="#3f3b55" aria-hidden="true"><path d="M3.68 21.598L19.688 21.598C22.137 21.598 23.355 20.379 23.355 17.965L23.355 3.656C23.355 1.242 22.137 0.023 19.688 0.023L3.68 0.023C1.23 0.023 0 1.23 0 3.656L0 17.965C0 20.391 1.23 21.598 3.68 21.598ZM3.504 19.711C2.461 19.711 1.887 19.16 1.887 18.07L1.887 7.02C1.887 5.941 2.461 5.379 3.504 5.379L19.84 5.379C20.883 5.379 21.469 5.941 21.469 7.02L21.469 18.07C21.469 19.16 20.883 19.711 19.84 19.711ZM9.398 9.586L10.09 9.586C10.5 9.586 10.629 9.469 10.629 9.059L10.629 8.367C10.629 7.957 10.5 7.828 10.09 7.828L9.398 7.828C8.988 7.828 8.848 7.957 8.848 8.367L8.848 9.059C8.848 9.469 8.988 9.586 9.398 9.586ZM13.289 9.586L13.981 9.586C14.391 9.586 14.531 9.469 14.531 9.059L14.531 8.367C14.531 7.957 14.391 7.828 13.981 7.828L13.289 7.828C12.879 7.828 12.738 7.957 12.738 8.367L12.738 9.059C12.738 9.469 12.879 9.586 13.289 9.586ZM17.18 9.586L17.871 9.586C18.281 9.586 18.422 9.469 18.422 9.059L18.422 8.367C18.422 7.957 18.281 7.828 17.871 7.828L17.18 7.828C16.77 7.828 16.641 7.957 16.641 8.367L16.641 9.059C16.641 9.469 16.77 9.586 17.18 9.586ZM5.508 13.418L6.188 13.418C6.609 13.418 6.738 13.301 6.738 12.891L6.738 12.199C6.738 11.789 6.609 11.672 6.188 11.672L5.508 11.672C5.086 11.672 4.957 11.789 4.957 12.199L4.957 12.891C4.957 13.301 5.086 13.418 5.508 13.418ZM9.398 13.418L10.09 13.418C10.5 13.418 10.629 13.301 10.629 12.891L10.629 12.199C10.629 11.789 10.5 11.672 10.09 11.672L9.398 11.672C8.988 11.672 8.848 11.789 8.848 12.199L8.848 12.891C8.848 13.301 8.988 13.418 9.398 13.418ZM13.289 13.418L13.981 13.418C14.391 13.418 14.531 13.301 14.531 12.891L14.531 12.199C14.531 11.789 14.391 11.672 13.981 11.672L13.289 11.672C12.879 11.672 12.738 11.789 12.738 12.199L12.738 12.891C12.738 13.301 12.879 13.418 13.289 13.418ZM17.18 13.418L17.871 13.418C18.281 13.418 18.422 13.301 18.422 12.891L18.422 12.199C18.422 11.789 18.281 11.672 17.871 11.672L17.18 11.672C16.77 11.672 16.641 11.789 16.641 12.199L16.641 12.891C16.641 13.301 16.77 13.418 17.18 13.418ZM5.508 17.262L6.188 17.262C6.609 17.262 6.738 17.133 6.738 16.723L6.738 16.031C6.738 15.621 6.609 15.504 6.188 15.504L5.508 15.504C5.086 15.504 4.957 15.621 4.957 16.031L4.957 16.723C4.957 17.133 5.086 17.262 5.508 17.262ZM9.398 17.262L10.09 17.262C10.5 17.262 10.629 17.133 10.629 16.723L10.629 16.031C10.629 15.621 10.5 15.504 10.09 15.504L9.398 15.504C8.988 15.504 8.848 15.621 8.848 16.031L8.848 16.723C8.848 17.133 8.988 17.262 9.398 17.262ZM13.289 17.262L13.981 17.262C14.391 17.262 14.531 17.133 14.531 16.723L14.531 16.031C14.531 15.621 14.391 15.504 13.981 15.504L13.289 15.504C12.879 15.504 12.738 15.621 12.738 16.031L12.738 16.723C12.738 17.133 12.879 17.262 13.289 17.262Z"/></svg>
+          <h3>紀錄</h3>
+        </div>
+        <p>一張月曆，跑過的日子點起來。不比較、不排名，只是讓你看見自己這個月確實動過。</p>
+        <div class="card-demo">
+          <div class="cal-head">
+            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+          </div>
+          <div class="cal-grid" id="cal"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap section beat" id="beat">
+  <div>
+    <h2>耳朵跟得上，腳就跟得上</h2>
+    <p>步頻不是用看的，是用聽的。選一個你不會聽膩的音色，把音量調到蓋過腳步聲就好——之後整趟你都不用再碰手機。</p>
+    <p>按下開始之後把螢幕關掉，計時和節拍都會在背景繼續。</p>
+  </div>
+  <div>
+    <div class="sounds">
+      <span class="sound">預設-1</span>
+      <span class="sound">預設-2</span>
+      <span class="sound">康加鼓</span>
+      <span class="sound">豎琴</span>
+      <span class="sound">脈衝低音</span>
+      <span class="sound">古箏</span>
+      <span class="sound on">隨機</span>
+    </div>
+    <div class="volume-card">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3f3b55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h3l4-4v14l-4-4H4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      <div class="volume-track"><div class="volume-fill"></div><div class="volume-thumb"></div></div>
+      <span class="note">節拍音量獨立調整</span>
+    </div>
+  </div>
+</div>
+
+<footer class="band-white">
+  <div class="wrap" style="padding-top: 72px;">
+    <div class="cta">
+      <div>
+        <h2>今天先跑五分鐘</h2>
+        <p>免費、不用註冊、離線也能跑。</p>
+      </div>
+      <div class="cta-row" style="margin: 0;">
+        <a class="btn btn-primary" href="https://apps.apple.com/tw/app/id6445976187">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8c-1.5 0-2.9.9-3.7 2.2-1.6 2.8-.4 6.9 1.1 9.1.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.2.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.6zM14.1 5.8c.6-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.8-1.4z"/></svg>
+          App Store
+        </a>
+        <a class="btn btn-secondary" href="https://play.google.com/store/apps/details?id=com.run.veryslowjogging">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#3f3b55" aria-hidden="true"><path d="M3.6 2.3c-.3.3-.5.8-.5 1.4v16.6c0 .6.2 1.1.5 1.4l.1.1 9.3-9.3v-.2L3.7 2.2l-.1.1zM16.3 15.6l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1.1.6 1.1 1.6 0 2.2l-3.7 2.1-.1-.1zM15.5 16.4L12.3 13.2 3 22.5c.4.4 1 .4 1.7.1l10.8-6.2M15.5 7.6L4.7 1.4C4 1 3.4 1.1 3 1.5l9.3 9.3 3.2-3.2z"/></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="who">
+        <img src="images/icon.png" alt="">
+        <span>超慢跑計時器 · terricome.site</span>
+      </div>
+      <div class="foot-links">
+        <a href="https://www.facebook.com/p/%E8%B6%85%E6%85%A2%E8%B7%91%E8%A8%98%E6%99%82%E5%99%A8-100090574330465/">FB 粉絲專頁</a>
+        <a href="privacy.html">隱私權政策</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var MINS = [5, 10, 15, 20, 25, 30];
+  var SPMS = [100, 110, 120, 130, 140, 150];
+  var R = 112;
+  var C = 2 * Math.PI * R;
+
+  var state = { mins: 5, spm: 120, running: false, left: 300 };
+
+  var clockEl = document.getElementById('clock');
+  var accEl = document.getElementById('acc');
+  var arcEl = document.getElementById('ringArc');
+  var thumbEl = document.getElementById('ringThumb');
+  var minSeg = document.getElementById('minSeg');
+  var spmSeg = document.getElementById('spmSeg');
+  var controls = document.getElementById('controls');
+
+  function buildSeg(container, values, key, onPick) {
+    values.forEach(function (v) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = v;
+      b.dataset.value = v;
+      b.addEventListener('click', function () { onPick(v); });
+      container.appendChild(b);
+    });
+  }
+
+  function paintSeg(container, selected) {
+    Array.prototype.forEach.call(container.children, function (b) {
+      b.setAttribute('aria-pressed', Number(b.dataset.value) === selected ? 'true' : 'false');
+    });
+  }
+
+  function button(label, cls, onClick) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn ' + cls;
+    b.textContent = label;
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function render() {
+    var total = state.mins * 60;
+    var frac = total > 0 ? (total - state.left) / total : 0;
+
+    var mm = Math.floor(state.left / 60);
+    var ss = state.left % 60;
+    clockEl.textContent = mm + ':' + (ss < 10 ? '0' + ss : ss);
+    accEl.textContent = Math.floor((total - state.left) / 60);
+
+    var on = C * frac;
+    arcEl.setAttribute('stroke-dasharray', on.toFixed(1) + ' ' + (C - on).toFixed(1));
+
+    var angle = (-90 + 360 * frac) * Math.PI / 180;
+    thumbEl.style.left = (50 + 42.42 * Math.cos(angle)).toFixed(2) + '%';
+    thumbEl.style.top = (50 + 42.42 * Math.sin(angle)).toFixed(2) + '%';
+
+    paintSeg(minSeg, state.mins);
+    paintSeg(spmSeg, state.spm);
+
+    controls.innerHTML = '';
+    if (!state.running && state.left === total) {
+      controls.appendChild(button('開始', 'btn-primary', function () {
+        state.running = true;
+        render();
+      }));
+    } else {
+      controls.appendChild(button(state.running ? '暫停' : '繼續', 'btn-primary', function () {
+        state.running = !state.running;
+        render();
+      }));
+      controls.appendChild(button('停止', 'btn-stop', function () {
+        state.running = false;
+        state.left = state.mins * 60;
+        render();
+      }));
+    }
+  }
+
+  buildSeg(minSeg, MINS, 'mins', function (v) {
+    state.mins = v;
+    state.left = v * 60;
+    state.running = false;
+    render();
+  });
+
+  buildSeg(spmSeg, SPMS, 'spm', function (v) {
+    state.spm = v;
+    render();
+  });
+
+  setInterval(function () {
+    if (!state.running) return;
+    state.left -= 1;
+    if (state.left <= 0) {
+      state.left = 0;
+      state.running = false;
+    }
+    render();
+  }, 1000);
+
+  var cal = document.getElementById('cal');
+  var done = [2, 3, 6, 9, 10, 13, 16, 17, 20, 23, 24, 27];
+  for (var i = 1; i <= 28; i++) {
+    var d = document.createElement('span');
+    d.textContent = i;
+    if (done.indexOf(i) >= 0) d.className = 'done';
+    cal.appendChild(d);
+  }
+
+  render();
+})();
+</script>
+
+</body>
 </html>
